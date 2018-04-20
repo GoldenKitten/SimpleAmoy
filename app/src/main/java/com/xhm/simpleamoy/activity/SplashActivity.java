@@ -27,7 +27,7 @@ public class SplashActivity extends BaseActivity {
     RelativeLayout rlAsRoot;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RxBarTool.FLAG_FULLSCREEN(this);
         setContentView(R.layout.activity_splash);

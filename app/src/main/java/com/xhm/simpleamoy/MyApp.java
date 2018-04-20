@@ -2,6 +2,8 @@ package com.xhm.simpleamoy;
 
 import android.app.Application;
 import android.os.Environment;
+import android.support.multidex.MultiDexApplication;
+
 import com.vondear.rxtools.RxTool;
 
 import java.io.File;
@@ -12,7 +14,7 @@ import java.io.PrintWriter;
  * Created by xhm on 2018/4/12.
  */
 
-public class MyApp extends Application {
+public class MyApp extends MultiDexApplication {
     private static MyApp mContext;
 
     @Override

@@ -16,7 +16,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:fillViewport="true"
-        android:scrollbarThumbVertical="@android:color/transparent"
         android:scrollbars="vertical">
 
         <LinearLayout

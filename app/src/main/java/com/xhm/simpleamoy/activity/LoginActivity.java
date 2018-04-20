@@ -19,13 +19,14 @@ import android.widget.Toast;
 
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxKeyboardTool;
+import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.et_mobile)
     EditText etMobile;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     private int height = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -160,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onRegistAndForgetPsdClicked(View view) {
         switch (view.getId()) {
             case R.id.regist:
-                //RxActivityTool.skipActivityAndFinish(this,RegistActivity.class);
+                RxActivityTool.skipActivityAndFinish(this,RegistActivity.class);
                 break;
             case R.id.forget_password:
                 break;
