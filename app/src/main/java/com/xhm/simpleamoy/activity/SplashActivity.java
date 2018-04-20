@@ -1,5 +1,6 @@
 package com.xhm.simpleamoy.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AlphaAnimation;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxBarTool;
+import com.vondear.rxtools.RxPermissionsTool;
 import com.vondear.rxtools.RxSPTool;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.C;
@@ -30,6 +32,15 @@ public class SplashActivity extends BaseActivity {
         RxBarTool.FLAG_FULLSCREEN(this);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+        RxPermissionsTool.with(this)
+                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .addPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .addPermission(Manifest.permission.CAMERA)
+                .addPermission(Manifest.permission.CALL_PHONE)
+                .addPermission(Manifest.permission.READ_PHONE_STATE)
+                .initPermission();
         initAnimation();
     }
     private void initAnimation() {
