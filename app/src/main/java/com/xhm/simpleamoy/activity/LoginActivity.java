@@ -155,6 +155,7 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.btn_login)
     public void onViewClicked() {
         RxKeyboardTool.hideSoftInput(this);
+        RxActivityTool.skipActivityAndFinish(this,MainActivity.class);
     }
 
     @OnClick({R.id.regist, R.id.forget_password})

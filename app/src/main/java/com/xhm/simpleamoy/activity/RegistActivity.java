@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.util.LogTime;
 import com.vondear.rxtools.RxBarTool;
+import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxPhotoTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxCaptcha;
@@ -32,6 +35,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.security.auth.login.LoginException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +68,7 @@ public class RegistActivity extends BaseActivity {
     @BindView(R.id.bt_ar_regist)
     Button btArRegist;
     private Uri resultUri;
+    private static final String TAG = "RegistActivity";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +76,7 @@ public class RegistActivity extends BaseActivity {
         setContentView(R.layout.activity_regist);
         ButterKnife.bind(this);
         initView();
+        Log.i(TAG, "onCreate: er");
     }
     private void initView() {
         Resources r = this.getResources();
@@ -113,15 +120,15 @@ public class RegistActivity extends BaseActivity {
         switch (requestCode) {
             case RxPhotoTool.GET_IMAGE_FROM_PHONE://选择相册之后的处理
                 if (resultCode == RESULT_OK) {
-//                    RxPhotoTool.cropImage(ActivityUser.this, );// 裁剪图片
-                    initUCrop(data.getData());
+                 //RxPhotoTool.cropImage(RegistActivity.this,data.getData() );// 裁剪图片
+                    //initUCrop(data.getData());
                 }
 
                 break;
             case RxPhotoTool.GET_IMAGE_BY_CAMERA://选择照相机之后的处理
                 if (resultCode == RESULT_OK) {
                     /* data.getExtras().get("data");*/
-//                    RxPhotoTool.cropImage(ActivityUser.this, RxPhotoTool.imageUriFromCamera);// 裁剪图片
+                  //RxPhotoTool.cropImage(this, RxPhotoTool.imageUriFromCamera);// 裁剪图片
                     initUCrop(RxPhotoTool.imageUriFromCamera);
                 }
 
@@ -139,7 +146,7 @@ public class RegistActivity extends BaseActivity {
                         apply(options).
                         thumbnail(0.5f).
                         into(ivArHeadImage);
-//                RequestUpdateAvatar(new File(RxPhotoTool.getRealFilePath(mContext, RxPhotoTool.cropImageUri)));
+               //RequestUpdateAvatar(new File(RxPhotoTool.getRealFilePath(mContext, RxPhotoTool.cropImageUri)));
                 break;
 
             case UCrop.REQUEST_CROP://UCrop裁剪之后的处理
@@ -197,7 +204,7 @@ public class RegistActivity extends BaseActivity {
         //设置裁剪窗口是否为椭圆
         options.setCircleDimmedLayer(true);
         //设置是否展示矩形裁剪框
-        // options.setShowCropFrame(false);
+         options.setShowCropFrame(false);
         //设置裁剪框横竖线的宽度
         //options.setCropGridStrokeWidth(20);
         //设置裁剪框横竖线的颜色
