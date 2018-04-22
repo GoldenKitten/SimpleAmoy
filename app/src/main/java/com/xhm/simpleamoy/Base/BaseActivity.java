@@ -1,6 +1,7 @@
 package com.xhm.simpleamoy.Base;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,11 +9,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.vondear.rxtools.RxActivityTool;
+import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.activity.LoginActivity;
+import com.xhm.simpleamoy.utils.ToolbarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +31,57 @@ public class BaseActivity extends AppCompatActivity {
     public BaseActivity mContext;
     public static List<Activity> mActivitys=new ArrayList<>();
     private ForceOfflineReceiver mReceiver;
+    public static ProgressDialog mProgressDialog;
+    public ToolbarHelper mToolbarHelper;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=this;
         RxActivityTool.addActivity(this);
+        initLoading();
         //addActivity(this);
+
+
+
     }
+    public  void initToolbar(String title,int icon){
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            // 默认不显示原生标题
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            mToolbarHelper = new ToolbarHelper(toolbar);
+            mToolbarHelper.setTitle(title);
+            mToolbarHelper.setIcon(icon);
+
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                FragmentManager fm = getSupportFragmentManager();
+                if (fm != null && fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                } else {
+                    finish();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void initLoading() {
+        if(mProgressDialog==null){
+            mProgressDialog=new ProgressDialog(this);
+            mProgressDialog.setTitle("");
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setCancelable(true);
+
+        }
+    }
+
     public static void addActivity(Activity activity){
         mActivitys.add(activity);
     }
@@ -48,6 +98,16 @@ public class BaseActivity extends AppCompatActivity {
     public void sendForceOffline(){
         Intent intent=new Intent("com.xhm.simpleamoy.FORCE_OFFLINE");
         sendBroadcast(intent);
+    }
+    public static void showLoading(){
+        if(mProgressDialog!=null){
+            mProgressDialog.show();
+        }
+    }
+    public static void cancelLoading(){
+        if(mProgressDialog!=null){
+            mProgressDialog.dismiss();
+        }
     }
     @Override
     protected void onResume() {

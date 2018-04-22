@@ -162,9 +162,10 @@ public class LoginActivity extends BaseActivity {
     public void onRegistAndForgetPsdClicked(View view) {
         switch (view.getId()) {
             case R.id.regist:
-                RxActivityTool.skipActivityAndFinish(this,RegistActivity.class);
+                RxActivityTool.skipActivity(this,RegistActivity.class);
                 break;
             case R.id.forget_password:
+                RxActivityTool.skipActivity(this,EmailActivity.class);
                 break;
         }
     }

@@ -18,28 +18,40 @@
             android:layout_height="wrap_content"
             android:hint="用户名"
             android:drawableLeft="@drawable/username"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            style="?android:attr/textViewStyle"/>
         <EditText
             android:id="@+id/et_ar_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="密码"
             android:drawableLeft="@drawable/password"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            style="?android:attr/textViewStyle"/>
         <EditText
             android:id="@+id/et_ar_affirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="确认密码"
             android:drawableLeft="@drawable/password"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            style="?android:attr/textViewStyle"/>
         <EditText
             android:id="@+id/et_ar_school_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="学校地址"
             android:drawableLeft="@drawable/school_address"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            style="?android:attr/textViewStyle"/>
+        <EditText
+            android:id="@+id/et_ar_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="邮箱"
+            android:drawableLeft="@drawable/email"
+            android:maxLines="1"
+            style="?android:attr/textViewStyle"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -49,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="验证码"
-                android:drawableLeft="@drawable/idcode"/>
+                android:drawableLeft="@drawable/idcode"
+                style="?android:attr/textViewStyle"/>
             <FrameLayout
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -85,15 +98,14 @@
                 android:orientation="vertical"
                 android:layout_centerVertical="true"
                 android:paddingTop="10dp">
-            <ImageView
-                android:id="@+id/iv_ar_head_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_circle_blue"
-                android:padding="3dp"
-                android:src="@drawable/circle_elves_ball"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_ar_head_image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:src="@drawable/circle_elves_ball"
+                    android:background="@drawable/shape_circle_blue"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
             </LinearLayout>
         </RelativeLayout>
         <Button
