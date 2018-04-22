@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxBarTool;
 import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxPhotoTool;
@@ -277,6 +278,23 @@ public class RegistActivity extends BaseActivity {
             mRegistUser.setSchoolAddress(etArSchoolAddress.getText().toString());
             mRegistUser.setEmail(etArEmail.getText().toString());
             mRegistUser.setHeadImage(mHeadImage);
+            showLoading("注册中...");
+            new Thread(() -> new RegistFun(mRegistUser){
+                @Override
+                public void registSucess() {
+                    cancelLoading();
+                    RxToast.success("注册成功");
+                    finish();
+                }
+
+                @Override
+                public void registFaild(String msg) {
+                    cancelLoading();
+                    RxToast.error(msg);
+                    RxActivityTool.skipActivityAndFinish(mContext,
+                            RegistActivity.class);
+                }
+            }).start();
         }
     }
 

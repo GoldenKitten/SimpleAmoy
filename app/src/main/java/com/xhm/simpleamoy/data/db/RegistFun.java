@@ -17,5 +17,5 @@ public abstract class RegistFun {
 
     }
     public abstract void registSucess();
-    public abstract void registFaild();
+    public abstract void registFaild(String msg);
 }

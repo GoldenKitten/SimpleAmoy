@@ -99,8 +99,11 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent=new Intent("com.xhm.simpleamoy.FORCE_OFFLINE");
         sendBroadcast(intent);
     }
-    public static void showLoading(){
+    public static void showLoading(String message){
         if(mProgressDialog!=null){
+            if(message!=null){
+                mProgressDialog.setMessage(message);
+            }
             mProgressDialog.show();
         }
     }
