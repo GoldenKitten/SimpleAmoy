@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
+import com.avos.avoscloud.AVOSCloud;
 import com.vondear.rxtools.RxTool;
 
 import java.io.File;
@@ -21,6 +22,8 @@ public class MyApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        AVOSCloud.initialize(this,"bdnkozGobOrByDkXdNgl4pvt-gzGzoHsz","mOWwqliHX6qTiRLEdNHYFlu6");
+        AVOSCloud.setDebugLogEnabled(true);
         mContext=this;
         //初始化工具类
         RxTool.init(this);

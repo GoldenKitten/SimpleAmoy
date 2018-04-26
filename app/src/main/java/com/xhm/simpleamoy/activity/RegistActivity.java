@@ -149,6 +149,7 @@ public class RegistActivity extends BaseActivity {
             if(checkRegistInfo(mRegistUser)) {
                 RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
                 rxDialogLoading.setLoadingText("注册中...");
+                rxDialogLoading.setCancelable(false);
                 rxDialogLoading.show();
                 new Thread(() -> new RegistFun(mRegistUser) {
                     @Override
