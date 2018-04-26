@@ -27,6 +27,7 @@
             android:hint="密码"
             android:drawableLeft="@drawable/password"
             android:maxLines="1"
+            android:inputType="textPassword"
             style="?android:attr/textViewStyle"/>
         <EditText
             android:id="@+id/et_ar_affirm_password"
@@ -35,12 +36,13 @@
             android:hint="确认密码"
             android:drawableLeft="@drawable/password"
             android:maxLines="1"
+            android:inputType="textPassword"
             style="?android:attr/textViewStyle"/>
         <EditText
             android:id="@+id/et_ar_school_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="学校地址"
+            android:hint="学校"
             android:drawableLeft="@drawable/school_address"
             android:maxLines="1"
             style="?android:attr/textViewStyle"/>

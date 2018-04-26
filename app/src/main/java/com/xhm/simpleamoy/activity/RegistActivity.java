@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +29,7 @@ import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxCaptcha;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogChooseImage;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.RegistFun;
@@ -38,8 +40,11 @@ import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -77,110 +82,23 @@ public class RegistActivity extends BaseActivity {
     @BindView(R.id.et_ar_email)
     EditText etArEmail;
     private Uri resultUri;
-    private File mHeadImage;
+    private byte[] mHeadImage;
     private String code;
     private RegistUser mRegistUser;
-    private boolean[] mState;
-    private static final String TAG = "RegistActivity";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RxBarTool.noTitle(this);
         setContentView(R.layout.activity_regist);
         ButterKnife.bind(this);
         initView();
     }
 
     private void initView() {
-        mState=new boolean[]{false,false,false,false,false,false};
-        btArRegist.setEnabled(false);
         Resources r = this.getResources();
         resultUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
                 + r.getResourcePackageName(R.drawable.circle_elves_ball) + "/"
                 + r.getResourceTypeName(R.drawable.circle_elves_ball) + "/"
                 + r.getResourceEntryName(R.drawable.circle_elves_ball));
-        etArUsername.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                if(!TextUtils.isEmpty(etArUsername.getText().toString())){
-                    if(!RxRegTool.isUsername(etArUsername.getText().toString())){
-                        RxToast.error("用户名，" +
-                                "取值范围为a-z,A-Z,0-9,\"_\",汉字，" +
-                                "不能以\"_\"结尾,用户名必须是6-20位");
-                        mState[0]=false;
-                    }
-                    mState[0]=true;
-                }
-            }
-        });
-        etArPassword.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                if(!TextUtils.isEmpty(etArPassword.getText().toString())){
-                    if(!Validator.isPassword(etArPassword.getText().toString())){
-                        RxToast.error("密码，" +
-                                "取值范围为a-z,A-Z,0-9,不能为特殊字符");
-                        btArRegist.setEnabled(false);
-                        mState[1]=false;
-                    }
-                    mState[1]=true;
-                }
-            }
-        });
-        etArAffirmPassword.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                if(!TextUtils.isEmpty(etArAffirmPassword.getText().toString())){
-                    if(!etArAffirmPassword.getText().toString().equals(
-                            etArPassword.getText().toString())){
-                        RxToast.error("密码不一致");
-                        btArRegist.setEnabled(false);
-                        mState[2]=false;
-                    }
-                    mState[2]=true;
-                }
-            }
-        });
-        etArEmail.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus){
-                if(!TextUtils.isEmpty(etArEmail.getText().toString())){
-                    if(!RxRegTool.isEmail(etArEmail.getText().toString())){
-                        RxToast.error("Email格式不正确");
-                        btArRegist.setEnabled(false);
-                        mState[4]=false;
-                    }
-                    mState[4]=true;
-                }
-            }
-        });
-        etArIdcode.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count==4){
-                    if(!TextUtils.isEmpty(etArIdcode.getText().toString())){
-                        if(!etArIdcode.getText().toString().equals(code)){
-                            RxToast.error("验证码不正确");
-                            btArRegist.setEnabled(false);
-                            mState[5]=false;
-                        }
-                        else {
-                            mState[5]=true;
-                        }
-                        if(mState[0]&&mState[1]&&mState[2]&&mState[4]&&mState[5]) {
-                            btArRegist.setEnabled(true);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @OnClick(R.id.tv_ar_get_code)
@@ -214,93 +132,96 @@ public class RegistActivity extends BaseActivity {
         if(mRegistUser==null){
             mRegistUser=new RegistUser();
         }
-        if(TextUtils.isEmpty(etArUsername.getText().toString())){
-            RxToast.error("用户名不能为空");
-            btArRegist.setEnabled(false);
-            mState[0]=false;
-            return;
-        }
-        else {
-            mState[0]=true;
-        }
-        if(TextUtils.isEmpty(etArPassword.getText().toString())){
-            RxToast.error("密码不能为空");
-            btArRegist.setEnabled(false);
-            mState[1]=false;
-            return;
-        }
-        else {
-            mState[1]=true;
-        }
-        if(TextUtils.isEmpty(etArAffirmPassword.getText().toString())){
-            RxToast.error("确认密码不能为空");
-            btArRegist.setEnabled(false);
-            mState[2]=false;
-            return;
-        }
-        else {
-            mState[2]=true;
-        }
-        if(TextUtils.isEmpty(etArSchoolAddress.getText().toString())){
-            RxToast.error("学校地址不能为空");
-            btArRegist.setEnabled(false);
-            mState[3]=false;
-            return;
-        }
-        else {
-            mState[3]=true;
-        }
-        if(TextUtils.isEmpty(etArEmail.getText().toString())){
-            RxToast.error("Email不能为空");
-            btArRegist.setEnabled(false);
-            mState[4]=false;
-            return;
-        }
-        else {
-            mState[4]=true;
-        }
-        if(TextUtils.isEmpty(etArIdcode.getText().toString())){
-            RxToast.error("验证码不能为空");
-            btArRegist.setEnabled(false);
-            mState[5]=false;
-            return;
-        }
-        else {
-            mState[5]=true;
-        }
         if(mHeadImage==null){
-          mHeadImage=new File(
-                  RxPhotoTool.getImageAbsolutePath(this,resultUri))  ;
+            Drawable drawable=getResources().getDrawable(
+                    R.drawable.circle_elves_ball);
+            mHeadImage=RxImageTool.drawable2Bytes(drawable, Bitmap.CompressFormat.PNG);
+
+
+          /*mHeadImage=new File(
+                  RxPhotoTool.getImageAbsolutePath(this,resultUri));*/
         }
-        if(mState[0]&&mState[1]&&mState[2]&&mState[3]&&mState[4]&&mState[5]) {
             mRegistUser.setUserName(etArUsername.getText().toString());
             mRegistUser.setPassword(etArPassword.getText().toString());
             mRegistUser.setSchoolAddress(etArSchoolAddress.getText().toString());
             mRegistUser.setEmail(etArEmail.getText().toString());
             mRegistUser.setHeadImage(mHeadImage);
-            showLoading("注册中...");
-            new Thread(() -> new RegistFun(mRegistUser){
-                @Override
-                public void registSucess() {
-                    cancelLoading();
-                    RxToast.success("注册成功");
-                    finish();
-                }
+            if(checkRegistInfo(mRegistUser)) {
+                RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
+                rxDialogLoading.setLoadingText("注册中...");
+                rxDialogLoading.show();
+                new Thread(() -> new RegistFun(mRegistUser) {
+                    @Override
+                    public void registSucess() {
+                        rxDialogLoading.cancel();
+                        RxToast.success("注册成功");
+                        finish();
+                    }
 
-                @Override
-                public void registFaild(String msg) {
-                    cancelLoading();
-                    RxToast.error(msg);
-                    RxActivityTool.skipActivityAndFinish(mContext,
-                            RegistActivity.class);
-                }
-            }).start();
+                    @Override
+                    public void registFaild(String msg) {
+                        rxDialogLoading.cancel();
+                        RxToast.error(msg);
+                        RxActivityTool.skipActivityAndFinish(mContext,
+                                RegistActivity.class);
+                    }
+                }).start();
+            }
         }
+
+    private boolean checkRegistInfo(RegistUser registUser) {
+        if(TextUtils.isEmpty(registUser.getUserName())){
+            RxToast.error(mContext,"用户名不能为空").show();
+            return false;
+        }
+        if(!RxRegTool.isUsername(registUser.getUserName())){
+            RxToast.error("用户名取值范围为a-z,A-Z,0-9," +
+                    "\"_\",汉字，不能以\"_\"结尾," +
+                    "用户名必须是6-20位");
+            return false;
+        }
+        if(TextUtils.isEmpty(registUser.getPassword())){
+            RxToast.error("密码不能为空");
+            return false;
+        }
+        if(!Validator.isPassword(registUser.getPassword())){
+            RxToast.error("密码取值范围为a-z,A-Z,0-9,不包含特殊字符，长度大于6");
+            return false;
+        }
+        if(TextUtils.isEmpty(etArAffirmPassword.getText().toString())){
+            RxToast.error("确认密码不能为空");
+            return false;
+        }
+        if(!registUser.getPassword().equals(
+                etArAffirmPassword.getText().toString())){
+            RxToast.error("密码不一致");
+            return false;
+        }
+        if(TextUtils.isEmpty(registUser.getSchoolAddress())){
+            RxToast.error("学校不能为空");
+            return false;
+        }
+        if(TextUtils.isEmpty(registUser.getEmail())){
+            RxToast.error("邮箱不能为空");
+            return false;
+        }
+        if(!Validator.isEmail(registUser.getEmail())){
+            RxToast.error("请输入正确的邮箱");
+            return false;
+        }
+        if(TextUtils.isEmpty(etArIdcode.getText().toString())){
+            RxToast.error("验证码不能为空");
+            return false;
+        }
+        if(!code.equals(etArIdcode.getText().toString())){
+            RxToast.error("验证码不正确");
+        }
+        return true;
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogUtil.i(TAG, String.valueOf(requestCode));
         switch (requestCode) {
             case RxPhotoTool.GET_IMAGE_FROM_PHONE://选择相册之后的处理
                 if (resultCode == RESULT_OK) {
@@ -318,7 +239,9 @@ public class RegistActivity extends BaseActivity {
             case UCrop.REQUEST_CROP://UCrop裁剪之后的处理
                 if (resultCode == RESULT_OK) {
                     resultUri = UCrop.getOutput(data);
-                    mHeadImage=roadImageView(resultUri, ivArHeadImage);
+
+                    mHeadImage=getBytesFromFile(roadImageView(resultUri, ivArHeadImage));
+
                     RxSPTool.putContent(this, "AVATAR", resultUri.toString());
                 } else if (resultCode == UCrop.RESULT_ERROR) {
                     final Throwable cropError = UCrop.getError(data);
@@ -332,7 +255,24 @@ public class RegistActivity extends BaseActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    public static byte[] getBytesFromFile(File f){
+        if (f == null){
+            return null;
+        }
+        try {
+            FileInputStream stream = new FileInputStream(f);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = stream.read(b)) != -1)
+                out.write(b, 0, n);
+            stream.close();
+            out.close();
+            return out.toByteArray();
+        } catch (IOException e){
+        }
+        return null;
+    }
     //从Uri中加载图片 并将其转化成File文件返回
     private File roadImageView(Uri uri, ImageView imageView) {
         Glide.with(this).

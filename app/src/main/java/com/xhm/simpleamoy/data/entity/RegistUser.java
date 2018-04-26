@@ -11,7 +11,7 @@ public class RegistUser {
     public String password;
     public String schoolAddress;
     public String email;
-    public File headImage;
+    public byte[] headImage;
 
     public String getUserName() {
         return userName;
@@ -45,11 +45,11 @@ public class RegistUser {
         this.email = email;
     }
 
-    public File getHeadImage() {
+    public byte[] getHeadImage() {
         return headImage;
     }
 
-    public void setHeadImage(File headImage) {
+    public void setHeadImage(byte[] headImage) {
         this.headImage = headImage;
     }
 }

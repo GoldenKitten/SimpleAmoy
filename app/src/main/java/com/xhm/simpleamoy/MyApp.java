@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 
 public class MyApp extends MultiDexApplication {
     private static MyApp mContext;
+    private static boolean isOpenException=false;
 
     @Override
     public void onCreate() {
@@ -24,18 +25,20 @@ public class MyApp extends MultiDexApplication {
         //初始化工具类
         RxTool.init(this);
         //捕获全局异常
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + File.separator + ".errorlog";
-            File file = new File(path);
-            try {
-                PrintWriter printWriter = new PrintWriter(file);
-                e.printStackTrace(printWriter);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-            System.exit(0);
-        });
+        if(isOpenException) {
+            Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + File.separator + ".errorlog";
+                File file = new File(path);
+                try {
+                    PrintWriter printWriter = new PrintWriter(file);
+                    e.printStackTrace(printWriter);
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+                System.exit(0);
+            });
+        }
     }
     public static MyApp newInstance(){return mContext;}
 }
