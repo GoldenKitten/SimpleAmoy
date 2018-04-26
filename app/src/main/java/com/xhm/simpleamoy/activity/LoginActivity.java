@@ -19,8 +19,14 @@ import android.widget.Toast;
 
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxKeyboardTool;
+import com.vondear.rxtools.RxRegTool;
+import com.vondear.rxtools.view.RxToast;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.R;
+import com.xhm.simpleamoy.data.db.LoginFun;
+import com.xhm.simpleamoy.data.entity.LoginUser;
+import com.xhm.simpleamoy.data.entity.RegistUser;
+import com.xhm.simpleamoy.utils.Validator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,13 +52,9 @@ public class LoginActivity extends BaseActivity {
     TextView forgetPassword;
     @BindView(R.id.ll_al_content)
     LinearLayout llAlContent;
-    @BindView(R.id.scrollView)
-    ScrollView scrollView;
     @BindView(R.id.rl_al_root)
     RelativeLayout rlAlRoot;
-    private int screenHeight = 0;//屏幕高度
-    private int keyHeight = 0; //软件盘弹起后所占高度
-    private int height = 0;
+    private LoginUser mLoginUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,8 +65,6 @@ public class LoginActivity extends BaseActivity {
         initEvent();
     }
     private void initView() {
-        screenHeight = this.getResources().getDisplayMetrics().heightPixels; //获取屏幕高度
-        keyHeight = screenHeight / 3;//弹起高度为屏幕高度的1/3
     }
 
     private void initEvent() {
@@ -116,15 +116,6 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
-        /**
-         * 禁止键盘弹起的时候可以滚动
-         */
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
 
     }
 
@@ -154,8 +145,49 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onViewClicked() {
-        //RxKeyboardTool.hideSoftInput(this);
+        if(mLoginUser==null){
+            mLoginUser=new LoginUser();
+        }
+        if(checkLoginState(mLoginUser)){
+            new Thread(() -> new LoginFun(mLoginUser){
+                @Override
+                public void loginSucess(RegistUser registUser,LoginUser loginUser) {
+
+                }
+
+                @Override
+                public void loginFaild(String msg) {
+
+                }
+            }).start();
+        }
         RxActivityTool.skipActivityAndFinish(this,MainActivity.class);
+    }
+
+    private boolean checkLoginState(LoginUser loginUser) {
+        if(TextUtils.isEmpty(etMobile.getText().toString())){
+            RxToast.error(mContext,"用户名不能为空").show();
+            return false;
+        }
+        if(!RxRegTool.isUsername(etMobile.getText().toString())){
+            RxToast.error("用户名取值范围为a-z,A-Z,0-9," +
+                    "\"_\",汉字，不能以\"_\"结尾," +
+                    "用户名必须是6-20位");
+            return false;
+        }
+        if(TextUtils.isEmpty(etPassword.getText().toString())){
+            RxToast.error("密码不能为空");
+            return false;
+        }
+        if(!Validator.isPassword(etPassword.getText().toString())){
+            RxToast.error("密码取值范围为a-z,A-Z,0-9,不包含特殊字符，长度大于6");
+            return false;
+        }
+        loginUser.setUsername(etMobile.getText().toString());
+        loginUser.setPassword(etPassword.getText().toString());
+        loginUser.setLoginState(false);
+        loginUser.setSave(false);
+        return true;
     }
 
     @OnClick({R.id.regist, R.id.forget_password})

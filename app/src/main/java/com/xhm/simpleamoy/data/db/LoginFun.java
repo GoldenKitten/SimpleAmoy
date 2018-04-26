@@ -17,6 +17,6 @@ public abstract class LoginFun {
     public void login(){
 
     }
-    public abstract void loginSucess();
+    public abstract void loginSucess(RegistUser registUser,LoginUser loginUser);
     public abstract void loginFaild(String msg);
 }

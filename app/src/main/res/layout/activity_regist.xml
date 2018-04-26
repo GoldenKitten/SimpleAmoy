@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/regist_bg"
     tools:context="com.xhm.simpleamoy.activity.RegistActivity"
-    android:background="@drawable/regist_bg">
+    android:fitsSystemWindows="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp">
         <EditText
             android:id="@+id/et_ar_username"
             android:layout_width="match_parent"
@@ -91,6 +92,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="上传头像"
+                android:background="@drawable/bg_btn_regist_selected"
+                android:layout_marginLeft="30dp"
                 android:layout_centerVertical="true"/>
             <LinearLayout
                 android:layout_alignParentRight="true"
@@ -112,8 +115,10 @@
         </RelativeLayout>
         <Button
             android:id="@+id/bt_ar_regist"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_regist_selected"
             android:text="注册"/>
 
     </LinearLayout>
