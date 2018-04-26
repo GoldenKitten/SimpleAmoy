@@ -137,9 +137,6 @@ public class RegistActivity extends BaseActivity {
                     R.drawable.circle_elves_ball);
             mHeadImage=RxImageTool.drawable2Bytes(drawable, Bitmap.CompressFormat.PNG);
 
-
-          /*mHeadImage=new File(
-                  RxPhotoTool.getImageAbsolutePath(this,resultUri));*/
         }
             mRegistUser.setUserName(etArUsername.getText().toString());
             mRegistUser.setPassword(etArPassword.getText().toString());
