@@ -1,6 +1,8 @@
 package com.xhm.simpleamoy.utils;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
 import java.util.List;
@@ -23,7 +25,7 @@ public  abstract  class CheckUserUtil
         AVQuery avQuery = new AVQuery("RegistUser");
         avQuery.whereEqualTo("userName", userName);
         avQuery.findInBackground(new FindCallback() {
-            @Override
+
             public void done(List list, AVException e) {
 
                 if (e == null) {
@@ -34,6 +36,7 @@ public  abstract  class CheckUserUtil
                     }
                     else {
                         getRegistState(false);
+                        checkPassword(list);
                     }
 
 
@@ -47,4 +50,5 @@ public  abstract  class CheckUserUtil
     }
 
   public abstract void getRegistState(boolean msg);
+    public  abstract  void checkPassword(List list);
 }
