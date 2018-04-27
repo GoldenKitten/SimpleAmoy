@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.vondear.rxtools.RxActivityTool;
 import com.xhm.simpleamoy.R;
@@ -33,12 +34,16 @@ public class BaseActivity extends AppCompatActivity {
     private ForceOfflineReceiver mReceiver;
     public static ProgressDialog mProgressDialog;
     public ToolbarHelper mToolbarHelper;
+    private Toolbar mToolbar;
+    public  FragmentManager mFragmentManager=null;
+    private long exitTime = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext=this;
         RxActivityTool.addActivity(this);
+        mFragmentManager=getSupportFragmentManager();
         initLoading();
         //addActivity(this);
 
@@ -46,16 +51,36 @@ public class BaseActivity extends AppCompatActivity {
 
     }
     public  void initToolbar(String title,int icon){
-        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        if(mToolbar==null) {
+            mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
             // 默认不显示原生标题
             getSupportActionBar().setDisplayShowTitleEnabled(false);
-            mToolbarHelper = new ToolbarHelper(toolbar);
+        }
+        if (mToolbar != null) {
+            if(mToolbarHelper==null) {
+                mToolbarHelper = new ToolbarHelper(mToolbar);
+            }
             mToolbarHelper.setTitle(title);
             mToolbarHelper.setIcon(icon);
-
         }
+    }
+    public  void initToolbar(String title){
+        if(mToolbar==null) {
+            mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
+            // 默认不显示原生标题
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        if (mToolbar != null) {
+            if(mToolbarHelper==null) {
+                mToolbarHelper = new ToolbarHelper(mToolbar);
+            }
+            mToolbarHelper.setTitle(title);
+        }
+    }
+    public Toolbar getCustomToolbar(){
+        return mToolbar;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -145,7 +170,8 @@ public class BaseActivity extends AppCompatActivity {
                     .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            finishAllActivity();
+                            //finishAllActivity();
+                            RxActivityTool.finishAllActivity();
                             Intent loginIntent=new Intent(mContext,
                                     LoginActivity.class);
                             mContext.startActivity(loginIntent);
@@ -155,4 +181,20 @@ public class BaseActivity extends AppCompatActivity {
                     .show();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (mFragmentManager.getBackStackEntryCount() == 0) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                        Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            mFragmentManager.popBackStack();
+        }
+    }
+
 }

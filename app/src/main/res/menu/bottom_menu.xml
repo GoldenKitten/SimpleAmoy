@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_first_pager"
+        android:icon="@drawable/btn_tab_home_selector"
+        android:title="首页"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/bottom_issue"
+        android:icon="@drawable/btn_tab_issue_selector"
+        android:title="发布"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/bottom_person"
+        android:icon="@drawable/btn_tab_persion_selector"
+        android:title="个人"
+        app:showAsAction="withText" />
+</menu>

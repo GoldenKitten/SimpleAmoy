@@ -21,6 +21,7 @@ import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxKeyboardTool;
 import com.vondear.rxtools.RxRegTool;
 import com.vondear.rxtools.view.RxToast;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.LoginFun;
@@ -145,23 +146,31 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onViewClicked() {
-        if(mLoginUser==null){
+        RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
+        /*if(mLoginUser==null){
             mLoginUser=new LoginUser();
         }
         if(checkLoginState(mLoginUser)){
+            RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
+            rxDialogLoading.setLoadingText("登录中...");
+            rxDialogLoading.setCancelable(false);
+            rxDialogLoading.show();
             new Thread(() -> new LoginFun(mLoginUser){
                 @Override
                 public void loginSucess(RegistUser registUser,LoginUser loginUser) {
-
+                    rxDialogLoading.cancel();
+                    RxToast.success("登录成功");
+                    RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
                 }
 
                 @Override
                 public void loginFaild(String msg) {
-
+                    rxDialogLoading.cancel();
+                    RxToast.error(msg);
                 }
             }).start();
-        }
-        RxActivityTool.skipActivityAndFinish(this,MainActivity.class);
+        }*/
+
     }
 
     private boolean checkLoginState(LoginUser loginUser) {
@@ -185,8 +194,6 @@ public class LoginActivity extends BaseActivity {
         }
         loginUser.setUsername(etMobile.getText().toString());
         loginUser.setPassword(etPassword.getText().toString());
-        loginUser.setLoginState(false);
-        loginUser.setSave(false);
         return true;
     }
 

@@ -160,8 +160,6 @@ public class RegistActivity extends BaseActivity {
                     public void registFaild(String msg) {
                         rxDialogLoading.cancel();
                         RxToast.error(msg);
-                        RxActivityTool.skipActivityAndFinish(mContext,
-                                RegistActivity.class);
                     }
                 }).start();
             }
