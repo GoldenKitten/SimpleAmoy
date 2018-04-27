@@ -58,5 +58,7 @@ dependencies {
     //圆形图片
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     // LeanCloud 基础包
-    compile ('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+    compile('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+    //RecycleAdapter
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.38'
 }

@@ -37,18 +37,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:theme="@style/MyTheme"
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme" />
         <activity
-            android:theme="@style/MyTheme"
             android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme" />
         <activity
-            android:theme="@style/MyTheme"
             android:name=".activity.RegistActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".activity.EmailActivity"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme" />
+        <activity android:name=".activity.EmailActivity" />
+        <activity android:name=".activity.PersonDataActivity"></activity>
     </application>
 
 </manifest>

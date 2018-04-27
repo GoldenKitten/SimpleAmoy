@@ -84,8 +84,12 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(RxSPTool.getBoolean(MyApp.newInstance(),
+                /*if(RxSPTool.getBoolean(MyApp.newInstance(),
                         C.Splash.IS_LOGIN)){
+                    RxActivityTool.skipActivityAndFinish(SplashActivity.this,
+                            MainActivity.class);
+                }*/
+                if(true){
                     RxActivityTool.skipActivityAndFinish(SplashActivity.this,
                             MainActivity.class);
                 }

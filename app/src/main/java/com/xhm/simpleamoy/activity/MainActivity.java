@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
                     initToolbar("首页");
                     break;
                 case  R.id.bottom_issue:
+                    drawerLayout.setBackgroundResource(R.drawable.issue_bg);
                     FragmentTransaction iTransaction = mFragmentManager.beginTransaction();
                     IssueFragment issueFragment = IssueFragment.newInstance
                             (mFragmentManager);
@@ -77,6 +78,7 @@ public class MainActivity extends BaseActivity {
                     initToolbar("发布");
                     break;
                 case  R.id.bottom_person:
+                    drawerLayout.setBackgroundResource(R.drawable.person_bg);
                     FragmentTransaction pTransaction = mFragmentManager.beginTransaction();
                     PersonFragment personFragment = PersonFragment.newInstance
                             (mFragmentManager);
