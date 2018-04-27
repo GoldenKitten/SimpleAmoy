@@ -15,6 +15,7 @@ import com.vondear.rxtools.RxPermissionsTool;
 import com.vondear.rxtools.RxSPTool;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.C;
+import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
 
 import butterknife.BindView;
@@ -83,8 +84,8 @@ public class SplashActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if(RxSPTool.getBoolean(SplashActivity.this,
-                        C.Splash.ALREADY_LOGIN)){
+                if(RxSPTool.getBoolean(MyApp.newInstance(),
+                        C.Splash.IS_LOGIN)){
                     RxActivityTool.skipActivityAndFinish(SplashActivity.this,
                             MainActivity.class);
                 }

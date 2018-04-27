@@ -20,9 +20,12 @@ import android.widget.Toast;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxKeyboardTool;
 import com.vondear.rxtools.RxRegTool;
+import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.xhm.simpleamoy.Base.BaseActivity;
+import com.xhm.simpleamoy.C;
+import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.LoginFun;
 import com.xhm.simpleamoy.data.entity.LoginUser;
@@ -146,8 +149,8 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onViewClicked() {
-        RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
-        /*if(mLoginUser==null){
+        //RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
+        if(mLoginUser==null){
             mLoginUser=new LoginUser();
         }
         if(checkLoginState(mLoginUser)){
@@ -157,9 +160,15 @@ public class LoginActivity extends BaseActivity {
             rxDialogLoading.show();
             new Thread(() -> new LoginFun(mLoginUser){
                 @Override
-                public void loginSucess(RegistUser registUser,LoginUser loginUser) {
+                public void loginSucess() {
                     rxDialogLoading.cancel();
                     RxToast.success("登录成功");
+                    RxSPTool.putString(MyApp.newInstance(),
+                            C.Splash.USERNAME,mLoginUser.getUsername());
+                    RxSPTool.putString(MyApp.newInstance(),
+                            C.Splash.PASSWORD,mLoginUser.getPassword());
+                    RxSPTool.putBoolean(MyApp.newInstance(),
+                            C.Splash.IS_LOGIN,true);
                     RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
                 }
 
@@ -169,7 +178,7 @@ public class LoginActivity extends BaseActivity {
                     RxToast.error(msg);
                 }
             }).start();
-        }*/
+        }
 
     }
 

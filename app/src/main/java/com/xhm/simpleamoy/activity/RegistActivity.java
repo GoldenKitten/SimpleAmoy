@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -57,7 +58,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.vondear.rxtools.view.RxCaptcha.TYPE.CHARS;
 import static com.vondear.rxtools.view.dialog.RxDialogChooseImage.LayoutType.TITLE;
 
-public class RegistActivity extends BaseActivity {
+public class RegistActivity extends AppCompatActivity {
 
     @BindView(R.id.et_ar_username)
     EditText etArUsername;
@@ -144,7 +145,7 @@ public class RegistActivity extends BaseActivity {
             mRegistUser.setEmail(etArEmail.getText().toString());
             mRegistUser.setHeadImage(mHeadImage);
             if(checkRegistInfo(mRegistUser)) {
-                RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
+                RxDialogLoading rxDialogLoading = new RxDialogLoading(this);
                 rxDialogLoading.setLoadingText("注册中...");
                 rxDialogLoading.setCancelable(false);
                 rxDialogLoading.show();
@@ -167,7 +168,7 @@ public class RegistActivity extends BaseActivity {
 
     private boolean checkRegistInfo(RegistUser registUser) {
         if(TextUtils.isEmpty(registUser.getUserName())){
-            RxToast.error(mContext,"用户名不能为空").show();
+            RxToast.error("用户名不能为空");
             return false;
         }
         if(!RxRegTool.isUsername(registUser.getUserName())){
