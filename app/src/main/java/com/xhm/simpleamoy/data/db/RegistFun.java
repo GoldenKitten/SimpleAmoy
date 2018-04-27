@@ -9,6 +9,8 @@ import com.avos.avoscloud.SaveCallback;
 import com.xhm.simpleamoy.data.entity.RegistUser;
 import com.xhm.simpleamoy.utils.CheckUserUtil;
 
+import java.util.List;
+
 /**
  * Created by xhm on 2018/4/21.
  */
@@ -46,6 +48,11 @@ public abstract class RegistFun {
                 else {
                     registFaild("用户名存在，请重新输入！");
                 }
+            }
+
+            @Override
+            public void checkPassword(List list) {
+
             }
         };
 
