@@ -5,24 +5,24 @@ package com.xhm.simpleamoy.data.entity;
  */
 
 public class Event<T> {
-    private int code;
+    private String msg;
     private T data;
 
-    public Event(int code) {
-        this.code = code;
+    public Event(String msg) {
+        this.msg = msg;
     }
 
-    public Event(int code, T data) {
-        this.code = code;
+    public Event(String msg, T data) {
+        this.msg = msg;
         this.data = data;
     }
 
-    public int getCode() {
-        return code;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public T getData() {

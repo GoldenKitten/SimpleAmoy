@@ -143,17 +143,19 @@ public class IssueFragment extends Fragment {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getImage(Event<List<byte[]>> event) {
-        mGoodsImage = event.getData();
+        if(event.getMsg().equals("ImageEvent")) {
+            mGoodsImage = event.getData();
             mViewHolder.rvFiGoodsPic.setLayoutManager(new
-                    GridLayoutManager(mActivity,3));
-        IssueImageAdapter myAdapter=new IssueImageAdapter(
-                R.layout.fragment_issue_image_item,
-                mGoodsImage);
+                    GridLayoutManager(mActivity, 3));
+            IssueImageAdapter myAdapter = new IssueImageAdapter(
+                    R.layout.fragment_issue_image_item,
+                    mGoodsImage);
             mViewHolder.rvFiGoodsPic.setAdapter(myAdapter);
             myAdapter.setOnItemChildClickListener((adapter, view, position) -> {
                 mGoodsImage.remove(position);
                 myAdapter.notifyDataSetChanged();
             });
+        }
     }
     class IssueImageAdapter extends
             BaseQuickAdapter<byte[],BaseViewHolder> {

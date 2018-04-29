@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
                 public void getDataSucess(List list) {
                     RxSPTool.putString(MyApp.newInstance(),
                             C.Splash.SCHOOLADDRESS,(String) list.get(1));
-                    Event event=new Event(C.EventCode.A,list);
+                    Event event=new Event("HeadImageAndUserName",list);
                     EventBus.getDefault().post(event);
                 }
 
@@ -86,14 +86,16 @@ public class MainActivity extends BaseActivity {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void setImageAndUserName(Event<List> event){
-        View headView=navView.getHeaderView(0);
-        ImageView imageView=(ImageView) headView.findViewById(R.id.civ_head_image);
-        TextView textView=(TextView) headView.findViewById(R.id.tv_username);
-        Glide.with(this)
-                .load((byte[]) event.getData().get(0))
-                .into(imageView);
-        textView.setText(RxSPTool.getString(MyApp.newInstance(),
-                C.Splash.USERNAME));
+        if(event.getMsg().equals("HeadImageAndUserName")) {
+            View headView = navView.getHeaderView(0);
+            ImageView imageView = (ImageView) headView.findViewById(R.id.civ_head_image);
+            TextView textView = (TextView) headView.findViewById(R.id.tv_username);
+            Glide.with(this)
+                    .load((byte[]) event.getData().get(0))
+                    .into(imageView);
+            textView.setText(RxSPTool.getString(MyApp.newInstance(),
+                    C.Splash.USERNAME));
+        }
     }
     private void initView() {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -165,7 +167,7 @@ public class MainActivity extends BaseActivity {
                     mImage.add(FileUtil.
                             getBytesFromFile(new File(imagePath)));
                 }
-                Event imageEvent=new Event(C.EventCode.A,mImage);
+                Event imageEvent=new Event("ImageEvent",mImage);
                 EventBus.getDefault().post(imageEvent);
             }
         }
