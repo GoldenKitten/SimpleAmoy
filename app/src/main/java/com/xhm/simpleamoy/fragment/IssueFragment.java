@@ -19,11 +19,15 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.vondear.rxtools.RxDataTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
+import com.xhm.simpleamoy.data.db.IssueFun;
+import com.xhm.simpleamoy.data.db.RegistFun;
 import com.xhm.simpleamoy.data.entity.Event;
 import com.xhm.simpleamoy.data.entity.FirstPagerGoods;
 import com.xhm.simpleamoy.data.entity.IssueGoods;
@@ -48,9 +52,11 @@ public class IssueFragment extends Fragment {
     private static FragmentManager mFManager;
     private static IssueFragment mIssueFragment;
     private ViewHolder mViewHolder;
+    private static final int REQUEST_MAIN_IMAGE = 1;
     private static final int REQUEST_IMAGE = 2;
     private IssueGoods mIssueGoods;
     private List<byte[]> mGoodsImage;
+    private byte[] mMainGoodsImage;
 
     public static IssueFragment newInstance(FragmentManager fManager) {
         mFManager = fManager;
@@ -75,9 +81,16 @@ public class IssueFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        mViewHolder.btFiUpMainGoodsPic.setOnClickListener(v -> {
+            MultiImageSelector.create()
+                    .single()
+                    .showCamera(false)
+                    .start(mActivity,REQUEST_MAIN_IMAGE);
+        });
         mViewHolder.btFiUpGoodsPic.setOnClickListener(v -> {
             // Multi image selector form an Activity
             MultiImageSelector.create()
+                    .multi()
                     .showCamera(false)
                     .start(mActivity, REQUEST_IMAGE);
 
@@ -98,6 +111,7 @@ public class IssueFragment extends Fragment {
                     .etFiGoodsPrice
                     .getText()
                     .toString());
+            mIssueGoods.setMainGoodsPic(mMainGoodsImage);
             mIssueGoods.setGoodsPic(mGoodsImage);
             mIssueGoods.setWeixing(mViewHolder
                     .etFiWeixing
@@ -114,6 +128,29 @@ public class IssueFragment extends Fragment {
             mIssueGoods.setUserName(
                     RxSPTool.getString(MyApp.newInstance(),
                             C.Splash.USERNAME));
+            mIssueGoods.setSchoolAddress(
+                    RxSPTool.getString(MyApp.newInstance(),
+                            C.Splash.SCHOOLADDRESS));
+            if(checkUploadGoodsState(mIssueGoods)){
+                RxDialogLoading rxDialogLoading = new RxDialogLoading(mActivity);
+                rxDialogLoading.setLoadingText("发布中...");
+                rxDialogLoading.setCancelable(false);
+                rxDialogLoading.show();
+                new Thread(() -> new IssueFun(mIssueGoods){
+                    @Override
+                    public void issueSucess() {
+                        rxDialogLoading.cancel();
+                        RxToast.success("发布成功");
+
+                    }
+
+                    @Override
+                    public void issueFaild(String msg) {
+                        rxDialogLoading.cancel();
+                        RxToast.error(msg);
+                    }
+                }).start();
+            }
         });
     }
 
@@ -136,9 +173,22 @@ public class IssueFragment extends Fragment {
         RecyclerView rvFiGoodsPic;
         @BindView(R.id.bt_fi_issue)
         Button btFiIssue;
-
+        @BindView(R.id.bt_fi_up_main_goods_pic)
+        Button  btFiUpMainGoodsPic;
+        @BindView(R.id.iv_fi_main_goods_pic)
+        ImageView ivFiMainGoodsPic;
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getMainImage(Event<byte[]> event) {
+        if(event.getMsg().equals("MainImageEvent")) {
+            mMainGoodsImage=event.getData();
+            mViewHolder.ivFiMainGoodsPic.setVisibility(View.VISIBLE);
+            Glide.with(mActivity)
+                    .load(mMainGoodsImage)
+                    .into(mViewHolder.ivFiMainGoodsPic);
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -177,6 +227,30 @@ public class IssueFragment extends Fragment {
     public boolean checkUploadGoodsState(IssueGoods goods){
         if(TextUtils.isEmpty(goods.getGoodsName())){
             RxToast.error("标题不能为空");
+            return false;
+        }
+        if(TextUtils.isEmpty(goods.getGoodsDes())){
+            RxToast.error("描述不能为空");
+            return false;
+        }
+        if(TextUtils.isEmpty(goods.getGoodsPrice())){
+            RxToast.error("价格不能为空");
+            return false;
+        }
+        if(!(RxDataTool.isInteger(goods.getGoodsPrice())||
+                RxDataTool.isDouble(goods.getGoodsPrice()))){
+            RxToast.error("价格格式不正确");
+            return false;
+        }
+        if(TextUtils.isEmpty(goods.getWeixing())||
+                TextUtils.isEmpty(goods.getQq())||
+                TextUtils.isEmpty(goods.getMobile())){
+            RxToast.error("联系方式三个中必填一个");
+            return false;
+        }
+        if(goods.getMainGoodsPic()==null){
+            RxToast.error("商品主图片不能为空");
+            return false;
         }
         return true;
     }

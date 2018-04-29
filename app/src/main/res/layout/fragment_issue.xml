@@ -115,6 +115,18 @@
             android:lines="1"/>
     </LinearLayout>
     <Button
+        android:id="@+id/bt_fi_up_main_goods_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传商品主图片"
+        android:layout_gravity="center"/>
+    <ImageView
+        android:id="@+id/iv_fi_main_goods_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+    <Button
         android:id="@+id/bt_fi_up_goods_pic"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

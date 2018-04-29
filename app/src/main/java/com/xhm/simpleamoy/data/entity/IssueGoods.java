@@ -16,6 +16,16 @@ public class IssueGoods {
     private String weixing;
     private String qq;
     private String mobile;
+    private byte[] mainGoodsPic;
+
+    public byte[] getMainGoodsPic() {
+        return mainGoodsPic;
+    }
+
+    public void setMainGoodsPic(byte[] mainGoodsPic) {
+        this.mainGoodsPic = mainGoodsPic;
+    }
+
     private List<byte[]> goodsPic;
 
     public String getUserName() {

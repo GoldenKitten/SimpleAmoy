@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.xhm.simpleamoy.fragment.IssueFragment;
 import com.xhm.simpleamoy.fragment.PersonFragment;
 import com.xhm.simpleamoy.utils.BottomNavigationViewUtil;
 import com.xhm.simpleamoy.utils.FileUtil;
+import com.xhm.simpleamoy.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,6 +54,7 @@ public class MainActivity extends BaseActivity {
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.fl_content)
     FrameLayout flContent;
+    private static final int REQUEST_MAIN_IMAGE = 1;
     private static final int REQUEST_IMAGE = 2;
     private List<byte[]> mImage;
     @Override
@@ -61,7 +64,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initView();
-        initData();
+        //initData();
     }
 
     private void initData() {
@@ -169,6 +172,18 @@ public class MainActivity extends BaseActivity {
                 }
                 Event imageEvent=new Event("ImageEvent",mImage);
                 EventBus.getDefault().post(imageEvent);
+            }
+        }
+        if(requestCode == REQUEST_MAIN_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                // Get the result list of select image paths
+
+                List<String> path = data.getStringArrayListExtra(
+                        MultiImageSelectorActivity.EXTRA_RESULT);
+                byte[] mainImage=FileUtil
+                        .getBytesFromFile(new File(path.get(0)));
+                Event mainImageEvent=new Event("MainImageEvent",mainImage);
+                EventBus.getDefault().post(mainImageEvent);
             }
         }
     }
