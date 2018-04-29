@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="幽思寂动"
-        android:textColor="#FFF"
+        android:textColor="@color/theme_teal_dark"
         android:textSize="20sp"/>
 
 </RelativeLayout>

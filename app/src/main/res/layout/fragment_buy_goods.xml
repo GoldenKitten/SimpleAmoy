@@ -13,10 +13,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="5dp">
+
         <ImageView
+            android:id="@+id/iv_fbg_main_goods_pic"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/circle_elves_ball"/>
+        <TextView
+            android:id="@+id/tv_fbg_goods_name"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="标题"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -36,6 +44,7 @@
                 android:textSize="20sp"
                 android:textColor="#f00"/>
             <TextView
+                android:id="@+id/tv_fbg_goods_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20.75"
@@ -43,6 +52,7 @@
                 android:textColor="#f00"/>
         </LinearLayout>
             <TextView
+                android:id="@+id/tv_fbg_school_address"
                 android:layout_centerInParent="true"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
@@ -52,20 +62,85 @@
                 android:textColor="#000"/>
         </RelativeLayout>
         <LinearLayout
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="卖家:  "
             android:textSize="15sp"/>
         <TextView
+            android:id="@+id/tv_fbg_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="xia10681096"
             android:textSize="20sp"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="联系方式:" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_fbg_qq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QQ:3164006711" />
+
+                <TextView
+                    android:id="@+id/tv_fbg_weixing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信号:xia10681096" />
+
+                <TextView
+                    android:id="@+id/tv_fbg_mobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="手机号:13060083353" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品描述："
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/tv_fbg_goods_des"
+            android:layout_margin="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="10"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品图片:"
+            android:layout_gravity="center"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_fbg_goods_pic"
+            android:layout_margin="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 </ScrollView>

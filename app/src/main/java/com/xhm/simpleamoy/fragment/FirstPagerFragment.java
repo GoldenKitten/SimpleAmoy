@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,7 +41,7 @@ public class FirstPagerFragment extends Fragment {
     private static FragmentManager mFManager;
     private static FirstPagerFragment mFirstPagerFragment;
     private RecyclerView mRecyclerView;
-    private byte[] mHeadImage;
+    //private byte[] mHeadImage;
 
     public static FirstPagerFragment newInstance(FragmentManager fManager){
         mFManager=fManager;
@@ -57,9 +58,9 @@ public class FirstPagerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_first_pager,
                 container,false);
         mRecyclerView=(RecyclerView) view.findViewById(R.id.rv_ffp);
-        Drawable drawable=getResources().getDrawable(
-                R.drawable.circle_elves_ball);
-        mHeadImage= RxImageTool.drawable2Bytes(drawable, Bitmap.CompressFormat.PNG);
+       // Drawable drawable=getResources().getDrawable(
+               // R.drawable.circle_elves_ball);
+       // mHeadImage= RxImageTool.drawable2Bytes(drawable, Bitmap.CompressFormat.PNG);
         return view;
     }
 
@@ -79,9 +80,26 @@ public class FirstPagerFragment extends Fragment {
             @Override
             public void getGoodsItemSucess(List<FirstPagerGoods> firstPagerGoods) {
                 rxDialogLoading.cancel();
-                mRecyclerView.setAdapter(new FirstPagerAdapter(
+                FirstPagerAdapter firstPagerAdapter=new FirstPagerAdapter(
                         R.layout.fragment_first_pager_item,
-                        firstPagerGoods));
+                        firstPagerGoods);
+                firstPagerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                        FragmentTransaction transaction=mFManager.beginTransaction();
+                        BuyGoodsFragment buyGoodsFragment=BuyGoodsFragment
+                                .newInstance(mFManager,
+                                        firstPagerGoods.get(position).getUserName(),
+                                        firstPagerGoods.get(position).getGoodsUUID());
+                        transaction.replace(R.id.fl_content,buyGoodsFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                        //initToolbar("首页");
+
+                    }
+                });
+                mRecyclerView.setAdapter(firstPagerAdapter);
+
             }
 
             @Override

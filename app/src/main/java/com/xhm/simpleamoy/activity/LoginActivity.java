@@ -65,7 +65,15 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        initView();
         initEvent();
+    }
+
+    private void initView() {
+        etMobile.setText(RxSPTool.getString(MyApp.newInstance(),
+                C.Splash.USERNAME));
+        etPassword.setText(RxSPTool.getString(MyApp.newInstance(),
+                C.Splash.PASSWORD));
     }
 
     private void initEvent() {

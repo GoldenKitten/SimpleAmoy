@@ -16,9 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
+import com.vondear.rxtools.view.dialog.RxDialogSureCancel;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
@@ -117,6 +119,27 @@ public class MainActivity extends BaseActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.quit:
+                    final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(mContext);//提示弹窗
+                    //rxDialogSureCancel.getTitleView().setBackgroundResource(R.drawable.logo);
+                    rxDialogSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            RxActivityTool.skipActivityAndFinish(
+                                    MainActivity.this,
+                                    LoginActivity.class
+                            );
+                        }
+                    });
+                    rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            rxDialogSureCancel.cancel();
+                        }
+                    });
+                    rxDialogSureCancel.show();
+            }
             drawerLayout.closeDrawers();
             return true;
         });

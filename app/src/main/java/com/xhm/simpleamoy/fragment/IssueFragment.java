@@ -242,8 +242,8 @@ public class IssueFragment extends Fragment {
             RxToast.error("价格格式不正确");
             return false;
         }
-        if(TextUtils.isEmpty(goods.getWeixing())||
-                TextUtils.isEmpty(goods.getQq())||
+        if(TextUtils.isEmpty(goods.getWeixing())&&
+                TextUtils.isEmpty(goods.getQq())&&
                 TextUtils.isEmpty(goods.getMobile())){
             RxToast.error("联系方式三个中必填一个");
             return false;

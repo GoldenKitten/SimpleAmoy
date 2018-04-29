@@ -2,12 +2,14 @@ package com.xhm.simpleamoy.data.entity;
 
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by xhm on 2018/4/28.
  */
 
 public class IssueGoods {
+    private String goodsUUID;
     private String userName;
     private String schoolAddress;
     private String goodsName;
@@ -17,6 +19,14 @@ public class IssueGoods {
     private String qq;
     private String mobile;
     private byte[] mainGoodsPic;
+    private List<byte[]> goodsPic;
+
+    public IssueGoods() {
+        this.goodsUUID = UUID.randomUUID()
+                .toString()
+                .replace("-", "")
+                .toLowerCase();
+    }
 
     public byte[] getMainGoodsPic() {
         return mainGoodsPic;
@@ -25,8 +35,6 @@ public class IssueGoods {
     public void setMainGoodsPic(byte[] mainGoodsPic) {
         this.mainGoodsPic = mainGoodsPic;
     }
-
-    private List<byte[]> goodsPic;
 
     public String getUserName() {
         return userName;
@@ -98,5 +106,13 @@ public class IssueGoods {
 
     public void setGoodsPic(List<byte[]> goodsPic) {
         this.goodsPic = goodsPic;
+    }
+
+    public String getGoodsUUID() {
+        return goodsUUID;
+    }
+
+    public void setGoodsUUID(String goodsUUID) {
+        this.goodsUUID = goodsUUID;
     }
 }
