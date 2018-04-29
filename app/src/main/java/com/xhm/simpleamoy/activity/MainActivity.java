@@ -1,5 +1,7 @@
 package com.xhm.simpleamoy.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -7,16 +9,39 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.vondear.rxtools.RxImageTool;
+import com.vondear.rxtools.RxSPTool;
+import com.vondear.rxtools.view.RxToast;
 import com.xhm.simpleamoy.Base.BaseActivity;
+import com.xhm.simpleamoy.C;
+import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
+import com.xhm.simpleamoy.data.db.DataManager;
+import com.xhm.simpleamoy.data.entity.Event;
 import com.xhm.simpleamoy.fragment.FirstPagerFragment;
 import com.xhm.simpleamoy.fragment.IssueFragment;
 import com.xhm.simpleamoy.fragment.PersonFragment;
 import com.xhm.simpleamoy.utils.BottomNavigationViewUtil;
+import com.xhm.simpleamoy.utils.FileUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view)
@@ -27,15 +52,49 @@ public class MainActivity extends BaseActivity {
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.fl_content)
     FrameLayout flContent;
-
+    private static final int REQUEST_IMAGE = 2;
+    private List<byte[]> mImage;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         initView();
+        initData();
     }
 
+    private void initData() {
+        new Thread(() -> {
+            new DataManager(RxSPTool.getString(
+                    MyApp.newInstance(),
+                    C.Splash.USERNAME),0){
+                @Override
+                public void getDataSucess(List list) {
+                    RxSPTool.putString(MyApp.newInstance(),
+                            C.Splash.SCHOOLADDRESS,(String) list.get(1));
+                    Event event=new Event(C.EventCode.A,list);
+                    EventBus.getDefault().post(event);
+                }
+
+                @Override
+                public void getDataFaild(String msg) {
+                        RxToast.error(msg);
+                }
+            };
+        }).start();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setImageAndUserName(Event<List> event){
+        View headView=navView.getHeaderView(0);
+        ImageView imageView=(ImageView) headView.findViewById(R.id.civ_head_image);
+        TextView textView=(TextView) headView.findViewById(R.id.tv_username);
+        Glide.with(this)
+                .load((byte[]) event.getData().get(0))
+                .into(imageView);
+        textView.setText(RxSPTool.getString(MyApp.newInstance(),
+                C.Splash.USERNAME));
+    }
     private void initView() {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         FirstPagerFragment fPagerFragment =FirstPagerFragment.newInstance
@@ -72,6 +131,7 @@ public class MainActivity extends BaseActivity {
                     FragmentTransaction iTransaction = mFragmentManager.beginTransaction();
                     IssueFragment issueFragment = IssueFragment.newInstance
                             (mFragmentManager);
+                    EventBus.getDefault().register(issueFragment);
                     iTransaction.replace(R.id.fl_content,issueFragment);
                     //transaction.addToBackStack(null);
                     iTransaction.commit();
@@ -93,11 +153,35 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_IMAGE) {
+            if (resultCode == RESULT_OK) {
+                // Get the result list of select image paths
+                List<String> path = data.getStringArrayListExtra(
+                        MultiImageSelectorActivity.EXTRA_RESULT);
+                mImage=new ArrayList<byte[]>();
+                for(String imagePath:path){
+                    mImage.add(FileUtil.
+                            getBytesFromFile(new File(imagePath)));
+                }
+                Event imageEvent=new Event(C.EventCode.A,mImage);
+                EventBus.getDefault().post(imageEvent);
+            }
+        }
+    }
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

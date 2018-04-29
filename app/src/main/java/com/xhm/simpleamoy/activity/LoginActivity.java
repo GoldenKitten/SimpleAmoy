@@ -65,10 +65,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        initView();
         initEvent();
-    }
-    private void initView() {
     }
 
     private void initEvent() {
@@ -149,7 +146,6 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     public void onViewClicked() {
-        //RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
         if(mLoginUser==null){
             mLoginUser=new LoginUser();
         }

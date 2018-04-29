@@ -61,4 +61,8 @@ dependencies {
     compile('cn.leancloud.android:avoscloud-sdk:v4.6.4')
     //RecycleAdapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.38'
+    //图片多选框架
+    compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
+    //数据传递
+    compile 'org.greenrobot:eventbus:3.1.1'
 }

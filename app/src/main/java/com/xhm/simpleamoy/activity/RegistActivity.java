@@ -35,6 +35,7 @@ import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.RegistFun;
 import com.xhm.simpleamoy.data.entity.RegistUser;
+import com.xhm.simpleamoy.utils.FileUtil;
 import com.xhm.simpleamoy.utils.LogUtil;
 import com.xhm.simpleamoy.utils.Validator;
 import com.yalantis.ucrop.UCrop;
@@ -237,7 +238,7 @@ public class RegistActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     resultUri = UCrop.getOutput(data);
 
-                    mHeadImage=getBytesFromFile(roadImageView(resultUri, ivArHeadImage));
+                    mHeadImage= FileUtil.getBytesFromFile(roadImageView(resultUri, ivArHeadImage));
 
                     RxSPTool.putContent(this, "AVATAR", resultUri.toString());
                 } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -251,24 +252,6 @@ public class RegistActivity extends AppCompatActivity {
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-    public static byte[] getBytesFromFile(File f){
-        if (f == null){
-            return null;
-        }
-        try {
-            FileInputStream stream = new FileInputStream(f);
-            ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = stream.read(b)) != -1)
-                out.write(b, 0, n);
-            stream.close();
-            out.close();
-            return out.toByteArray();
-        } catch (IOException e){
-        }
-        return null;
     }
     //从Uri中加载图片 并将其转化成File文件返回
     private File roadImageView(Uri uri, ImageView imageView) {
