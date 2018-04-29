@@ -19,7 +19,13 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vondear.rxtools.RxImageTool;
+import com.vondear.rxtools.RxSPTool;
+import com.vondear.rxtools.view.RxToast;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
+import com.xhm.simpleamoy.C;
+import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
+import com.xhm.simpleamoy.data.db.GetGoodsItemFun;
 import com.xhm.simpleamoy.data.entity.FirstPagerGoods;
 
 import java.util.ArrayList;
@@ -60,18 +66,32 @@ public class FirstPagerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        List<FirstPagerGoods> data=new ArrayList<FirstPagerGoods>();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        for(int i=0;i<20;i++){
-            FirstPagerGoods firstPagerGoods=new FirstPagerGoods();
-            firstPagerGoods.setGoodsTitle("标题"+i);
-            firstPagerGoods.setGoodsPrice("20."+i);
-            firstPagerGoods.setGoodsImage(mHeadImage);
-            data.add(firstPagerGoods);
-        }
-        mRecyclerView.setAdapter(new FirstPagerAdapter(
-                R.layout.fragment_first_pager_item,
-                data));
+        RxDialogLoading rxDialogLoading = new RxDialogLoading(mActivity);
+        rxDialogLoading.setLoadingText("加载中 ...");
+        rxDialogLoading.setCancelable(false);
+        rxDialogLoading.show();
+        new Thread(() ->
+                new GetGoodsItemFun(
+                        RxSPTool.getString(
+                                MyApp.newInstance(),
+                                C.Splash.SCHOOLADDRESS)){
+            @Override
+            public void getGoodsItemSucess(List<FirstPagerGoods> firstPagerGoods) {
+                rxDialogLoading.cancel();
+                mRecyclerView.setAdapter(new FirstPagerAdapter(
+                        R.layout.fragment_first_pager_item,
+                        firstPagerGoods));
+            }
+
+            @Override
+            public void getGoodsItemFaild(String msg) {
+                rxDialogLoading.cancel();
+                RxToast.error(msg);
+            }
+        }).start();
+
+
     }
     class FirstPagerAdapter extends
             BaseQuickAdapter<FirstPagerGoods,BaseViewHolder>{
