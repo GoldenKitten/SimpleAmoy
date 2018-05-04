@@ -65,10 +65,10 @@ public class FirstPagerFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
+   public void onStart() {
         super.onStart();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        RxDialogLoading rxDialogLoading = new RxDialogLoading(mActivity);
+      RxDialogLoading rxDialogLoading = new RxDialogLoading(mActivity);
         rxDialogLoading.setLoadingText("加载中 ...");
         rxDialogLoading.setCancelable(false);
         rxDialogLoading.show();
