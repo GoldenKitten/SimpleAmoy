@@ -10,6 +10,7 @@ import com.avos.avoscloud.GetDataCallback;
 import com.xhm.simpleamoy.data.entity.FirstPagerGoods;
 import com.xhm.simpleamoy.data.entity.IssueGoods;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,35 +27,34 @@ public abstract class GetGoodsItemFun {
 
     public void getGoodsItem()
     {
-
+      mFirstPagerGoods=new ArrayList<FirstPagerGoods>();
       AVQuery avQuery=new AVQuery("Products");
        avQuery.whereEqualTo("schoolAddress", mSchoolAddress);
        avQuery.findInBackground(new FindCallback()
         {
             @Override
-            public void done(List list, AVException e)
-            {
-                if (e == null)
-                {
+            public void done(List list, AVException e) {
+                if (e == null) {
 
-                    if (!list.isEmpty())
+                    if (!(list.isEmpty()))
 
                     {
-                        Log.i("done: ", String.valueOf(list.size()));
+
                         for (int i = 0; i < list.size(); i++) {
                             AVObject avObject = (AVObject) list.get(i);
-                            FirstPagerGoods firstPagerGoods = new FirstPagerGoods();
+
                             avObject.getAVFile("mainGoodsPic").getDataInBackground(new GetDataCallback() {
                                 @Override
                                 public void done(byte[] bytes, AVException e) {
                                     if (e == null) {
+                                        FirstPagerGoods firstPagerGoods = new FirstPagerGoods();
                                         firstPagerGoods.setGoodsUUID(avObject.getString("goodsUUID"));
                                         firstPagerGoods.setUserName(avObject.getString("userName"));
                                         firstPagerGoods.setGoodsImage(bytes);
                                         firstPagerGoods.setGoodsTitle(avObject.getString("goodsName"));
                                         firstPagerGoods.setGoodsPrice(avObject.getString("goodsPrice"));
                                         mFirstPagerGoods.add(firstPagerGoods);
-                                        Log.i("fasfasfasf", "done: ");
+
                                         if (mFirstPagerGoods.size() == list.size()) {
                                             getGoodsItemSucess(mFirstPagerGoods);
                                         }
@@ -63,8 +63,7 @@ public abstract class GetGoodsItemFun {
                                 }
                             });
                         }
-                    }
-                    else getGoodsItemFaild("没有该校商品！");
+                    } else getGoodsItemFaild("没有该校商品！");
                 } else getGoodsItemFaild(e.getMessage());
             }
 

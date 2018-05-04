@@ -39,18 +39,19 @@ public abstract class IssueFun {
         products.put("qq",mIssueGoods.getQq());
         products.put("mobile",mIssueGoods.getMobile());
         products.put("mainGoodsPic",new AVFile(mIssueGoods.getUserName()+".productpic",mIssueGoods.getMainGoodsPic()));
-        int i=mIssueGoods.getGoodsPic().size();
-        ArrayList arrayList=new ArrayList();
-        for (int j=0;j<i;j++)
-        {
-            AVFile avFile=new AVFile(mIssueGoods.getUserName()+".goodsPic",mIssueGoods.getGoodsPic().get(j));
-            avFile.saveInBackground();
-            arrayList.add(avFile);
+        if (!(mIssueGoods.getGoodsPic()==null)) {
+            int i = mIssueGoods.getGoodsPic().size();
+            ArrayList arrayList = new ArrayList();
+            for (int j = 0; j < i; j++) {
+                AVFile avFile = new AVFile(mIssueGoods.getUserName() + ".goodsPic", mIssueGoods.getGoodsPic().get(j));
+                avFile.saveInBackground();
+                arrayList.add(avFile);
 
 
+            }
+            products.put("goodsPicArrayList", arrayList);
         }
-        products.put("goodsPicArrayList",arrayList);
-
+        else products.put("goodsPicArrayList",null);
         products.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
