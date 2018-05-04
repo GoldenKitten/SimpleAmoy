@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxRegTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
@@ -44,6 +46,8 @@ public class EmailActivity extends BaseActivity {
         setContentView(R.layout.activity_email);
         ButterKnife.bind(this);
         initToolbar("忘记密码", R.drawable.ic_back);
+        getCustomToolbar().setNavigationOnClickListener(v ->
+                RxActivityTool.finishActivity(this));
     }
 
     @OnClick(R.id.bt_ok)

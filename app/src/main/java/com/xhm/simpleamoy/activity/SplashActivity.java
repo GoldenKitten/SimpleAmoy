@@ -17,6 +17,7 @@ import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
+import com.xhm.simpleamoy.utils.LoadAssets;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,8 +42,14 @@ public class SplashActivity extends BaseActivity {
                 .addPermission(Manifest.permission.CALL_PHONE)
                 .addPermission(Manifest.permission.READ_PHONE_STATE)
                 .initPermission();
+        initData();
         initAnimation();
     }
+
+    private void initData() {
+        LoadAssets.initData(this,"school.json");
+    }
+
     private void initAnimation() {
         //旋转
         RotateAnimation rotateAnimation=new RotateAnimation(
@@ -86,7 +93,8 @@ public class SplashActivity extends BaseActivity {
             public void onAnimationEnd(Animation animation) {
                 if(RxSPTool.getBoolean(MyApp.newInstance(),
                         C.Splash.IS_LOGIN)){
-                    RxActivityTool.skipActivityAndFinish(SplashActivity.this,
+                    RxActivityTool.finishActivity(SplashActivity.this);
+                    RxActivityTool.skipActivity(SplashActivity.this,
                             MainActivity.class);
                 }
                 /*if(true){
@@ -94,7 +102,8 @@ public class SplashActivity extends BaseActivity {
                             MainActivity.class);
                 }*/
                 else {
-                    RxActivityTool.skipActivityAndFinish(SplashActivity.this,
+                    RxActivityTool.finishActivity(SplashActivity.this);
+                    RxActivityTool.skipActivity(SplashActivity.this,
                             LoginActivity.class);
                 }
 

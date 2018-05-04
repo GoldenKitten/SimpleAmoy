@@ -173,7 +173,8 @@ public class LoginActivity extends BaseActivity {
                             C.Splash.PASSWORD,mLoginUser.getPassword());
                     RxSPTool.putBoolean(MyApp.newInstance(),
                             C.Splash.IS_LOGIN,true);
-                    RxActivityTool.skipActivityAndFinish(mContext,MainActivity.class);
+                    RxActivityTool.finishActivity(mContext);
+                    RxActivityTool.skipActivity(mContext,MainActivity.class);
                 }
 
                 @Override

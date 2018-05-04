@@ -185,12 +185,17 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (mFragmentManager.getBackStackEntryCount() == 0) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), "再按一次退出程序",
-                        Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                super.onBackPressed();
+            if(RxActivityTool.getActivityStack().size()==1) {
+                if ((System.currentTimeMillis() - exitTime) > 2000) {
+                    Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                            Toast.LENGTH_SHORT).show();
+                    exitTime = System.currentTimeMillis();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+            else {
+                RxActivityTool.finishActivity(this);
             }
         } else {
             mFragmentManager.popBackStack();
