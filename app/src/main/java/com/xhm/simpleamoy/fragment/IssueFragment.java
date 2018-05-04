@@ -75,12 +75,16 @@ public class IssueFragment extends Fragment {
         if(mViewHolder==null) {
             mViewHolder = new ViewHolder(view);
         }
+        view.setTag(mViewHolder);
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if(mViewHolder==null) {
+            mViewHolder = (ViewHolder) getView().getTag();
+        }
         mViewHolder.btFiUpMainGoodsPic.setOnClickListener(v -> {
             MultiImageSelector.create()
                     .single()
