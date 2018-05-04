@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initView();
-        //initData();
+        initData();
     }
 
     private void initData() {

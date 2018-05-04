@@ -33,7 +33,7 @@ public abstract class RegistFun {
                     user.put("password", mRegistUser.getPassword());
                     user.put("schoolAddress", mRegistUser.getSchoolAddress());
                     user.put("email", mRegistUser.getEmail());
-                    user.put("headImage", new AVFile(mRegistUser.getUserName()+ "RegistUserPic", mRegistUser.getHeadImage()));
+                    user.put("headImage", new AVFile(mRegistUser.getUserName()+ ".RegistUserPic", mRegistUser.getHeadImage()));
                     user.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(AVException e) {
