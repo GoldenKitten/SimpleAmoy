@@ -213,6 +213,7 @@ public class RegistActivity extends AppCompatActivity {
         }
         if(!code.equals(etArIdcode.getText().toString())){
             RxToast.error("验证码不正确");
+            return false;
         }
         return true;
     }
