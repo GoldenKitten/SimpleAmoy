@@ -41,6 +41,7 @@ public abstract class IssueFun {
         products.put("qq",mIssueGoods.getQq());
         products.put("mobile",mIssueGoods.getMobile());
         products.put("mainGoodsPic",new AVFile(mIssueGoods.getUserName()+
+                "."+
                 mIssueGoods.getGoodsUUID()+
                 ".productpic",
                 mIssueGoods.getMainGoodsPic()));
@@ -49,6 +50,7 @@ public abstract class IssueFun {
             ArrayList arrayList = new ArrayList();
             for (int j = 0; j < i; j++) {
                 AVFile avFile = new AVFile(mIssueGoods.getUserName() +
+                        "."+
                         mIssueGoods.getGoodsUUID()+
                         ".goodsPic",
                         mIssueGoods.getGoodsPic().get(j));

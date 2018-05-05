@@ -191,6 +191,14 @@ public class BuyGoodsFragment extends Fragment {
             else {
                 mViewHolder.tvFbgMobile.setText(issueGoods.getMobile());
             }
+            if(issueGoods.isByBuy()&&
+                    issueGoods.getBuyUserName()
+                            .equals(RxSPTool.getString(
+                                    MyApp.newInstance(),
+                                    C.Splash.USERNAME))){
+                mViewHolder.btFbgScheduleCenter.setVisibility(View.GONE);
+                mViewHolder.btFbgCancelSchedule.setVisibility(View.VISIBLE);
+            }
             mViewHolder.tvFbgUsername.setText(issueGoods.getUserName());
             mViewHolder.rvFbgGoodsPic.setLayoutManager(
                     new LinearLayoutManager(mActivity));
