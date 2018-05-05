@@ -104,7 +104,7 @@ public class BuyGoodsFragment extends Fragment {
                 rxDialogLoading.cancel();
                 mFManager.popBackStack();
             }
-        });
+        }).start();
         mViewHolder.btFbgScheduleCenter.setOnClickListener(v -> {
             RxDialogLoading rxDialogLoadinga = new RxDialogLoading(mActivity);
             rxDialogLoadinga.setLoadingText("预定中 ...");

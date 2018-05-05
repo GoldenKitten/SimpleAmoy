@@ -57,10 +57,13 @@
         <activity
             android:name=".activity.MyIssueActivity"
             android:theme="@style/MyTheme" />
-        <activity android:name=".activity.MyBuyActivity"
-            android:theme="@style/MyTheme"/>
-        <activity android:name=".activity.MySellActivity"
-            android:theme="@style/MyTheme"></activity>
+        <activity
+            android:name=".activity.MyBuyActivity"
+            android:theme="@style/MyTheme" />
+        <activity
+            android:name=".activity.MySellActivity"
+            android:theme="@style/MyTheme" />
+        <activity android:name=".activity.MyBuyItemActivity"></activity>
     </application>
 
 </manifest>

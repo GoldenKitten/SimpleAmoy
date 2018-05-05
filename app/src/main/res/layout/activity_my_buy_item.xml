@@ -4,16 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.xhm.simpleamoy.activity.MyIssueActivity"
-    android:background="@drawable/my_buy_bg"
+    tools:context="com.xhm.simpleamoy.activity.MyBuyItemActivity"
     android:orientation="vertical">
     <include layout="@layout/custom_toolbar"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_amb"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </android.support.v7.widget.RecyclerView>
+    <include layout="@layout/fragment_buy_goods"/>
 
 </LinearLayout>

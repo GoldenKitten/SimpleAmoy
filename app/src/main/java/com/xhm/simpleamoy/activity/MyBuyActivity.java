@@ -23,8 +23,12 @@ import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.GetMyBuyGoodsItemFun;
+import com.xhm.simpleamoy.data.entity.BuyGoods;
+import com.xhm.simpleamoy.data.entity.Event;
 import com.xhm.simpleamoy.data.entity.FirstPagerGoods;
 import com.xhm.simpleamoy.fragment.BuyGoodsFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -34,10 +38,7 @@ import butterknife.ButterKnife;
 public class MyBuyActivity extends BaseActivity {
     @BindView(R.id.rv_amb)
     RecyclerView rvAmb;
-    @BindView(R.id.fl_amb)
-    FrameLayout flAmb;
     private Activity mActivity;
-    private FragmentManager mFragmentManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,10 @@ public class MyBuyActivity extends BaseActivity {
         setContentView(R.layout.activity_my_buy);
         ButterKnife.bind(this);
         mActivity = this;
-        mFragmentManager = getSupportFragmentManager();
         initToolbar("我的购买", R.drawable.ic_back);
         getCustomToolbar().setNavigationOnClickListener(v ->
                 RxActivityTool.finishActivity(this));
-        //initData();
+        initData();
     }
 
     private void initData() {
@@ -70,18 +70,12 @@ public class MyBuyActivity extends BaseActivity {
                                 R.layout.fragment_first_pager_item,
                                 firstPagerGoods);
                         firstPagerAdapter.setOnItemClickListener((adapter, view, position) -> {
-                            flAmb.setVisibility(View.VISIBLE);
-                            rvAmb.setVisibility(View.GONE);
-                            FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                            BuyGoodsFragment buyGoodsFragment = BuyGoodsFragment
-                                    .newInstance(mFragmentManager,
-                                            firstPagerGoods.get(position).getUserName(),
-                                            firstPagerGoods.get(position).getGoodsUUID());
-                            transaction.replace(R.id.fl_amb, buyGoodsFragment);
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                            //initToolbar("首页");
-
+                            BuyGoods buyGoods=new BuyGoods();
+                            buyGoods.setSellUUID(firstPagerGoods.get(position).getGoodsUUID());
+                            buyGoods.setSellUserName(firstPagerGoods.get(position).getUserName());
+                            Event<BuyGoods> event=new Event<BuyGoods>("MYBUYITEM",buyGoods);
+                            RxActivityTool.skipActivity(mContext,MyBuyItemActivity.class);
+                            EventBus.getDefault().post(event);
                         });
                         rvAmb.setAdapter(firstPagerAdapter);
 
@@ -113,5 +107,6 @@ public class MyBuyActivity extends BaseActivity {
             }
         }
     }
+
 
 }
