@@ -144,10 +144,20 @@
     </LinearLayout>
 
 </ScrollView>
-   <Button
-       android:layout_alignParentBottom="true"
-       android:layout_centerHorizontal="true"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="预定"/>
+    <Button
+        android:id="@+id/bt_fbg_cancel_schedule"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="取消预定"/>
+    <Button
+        android:id="@+id/bt_fbg_schedule_center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="预定"/>
+
 </RelativeLayout>
