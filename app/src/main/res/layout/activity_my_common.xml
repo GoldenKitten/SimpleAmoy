@@ -5,24 +5,24 @@
     android:layout_height="100dp"
     android:layout_margin="15dp">
     <ImageView
-        android:id="@+id/iv_ffpi"
+        android:id="@+id/iv_amc"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/circle_elves_ball"
         android:layout_alignParentLeft="true"/>
     <TextView
         android:layout_margin="5dp"
-        android:id="@+id/tv_ffpi_title"
-        android:layout_toRightOf="@+id/iv_ffpi"
+        android:id="@+id/tv_amc_title"
+        android:layout_toRightOf="@+id/iv_amc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="这是一件新商品"
         android:textSize="25sp"
         android:textColor="#000"/>
     <TextView
-        android:id="@+id/tv_ffpi_symbol"
+        android:id="@+id/tv_amc_symbol"
         android:layout_margin="5dp"
-        android:layout_toRightOf="@+id/iv_ffpi"
+        android:layout_toRightOf="@+id/iv_amc"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,13 +30,19 @@
         android:textSize="15sp"
         android:textColor="#f00"/>
     <TextView
-        android:id="@+id/tv_ffpi_price"
+        android:id="@+id/tv_amc_price"
         android:layout_margin="5dp"
-        android:layout_toRightOf="@+id/tv_ffpi_symbol"
+        android:layout_toRightOf="@+id/tv_amc_symbol"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="33.66"
         android:textSize="20sp"
         android:textColor="#f00"/>
+    <CheckBox
+        android:id="@+id/cb_amc"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

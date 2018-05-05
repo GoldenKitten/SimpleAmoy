@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_fp_my_issue"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="个人"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:text="我的发布"
+        android:textColor="#000"
+        android:background="#ccc"
+        android:drawableRight="@drawable/icon_right"
+        android:padding="10dp"
+        android:layout_margin="10dp"/>
+    <TextView
+        android:id="@+id/tv_fp_my_buy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的购买"
+        android:textColor="#000"
+        android:background="#ccc"
+        android:drawableRight="@drawable/icon_right"
+        android:padding="10dp"
+        android:layout_margin="10dp"/>
+    <TextView
+        android:id="@+id/tv_fp_my_sell"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的卖出"
+        android:textColor="#000"
+        android:background="#ccc"
+        android:drawableRight="@drawable/icon_right"
+        android:padding="10dp"
+        android:layout_margin="10dp"/>
+
+</LinearLayout>

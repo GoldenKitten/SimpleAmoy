@@ -69,22 +69,20 @@ public class IssueFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mActivity=getActivity();
         View view = inflater.inflate(R.layout.fragment_issue,
                 container, false);
         if(mViewHolder==null) {
             mViewHolder = new ViewHolder(view);
         }
-        view.setTag(mViewHolder);
+
         return view;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if(mViewHolder==null) {
-            mViewHolder = (ViewHolder) getView().getTag();
-        }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mActivity=getActivity();
+            mViewHolder = new ViewHolder(getView());
         mViewHolder.btFiUpMainGoodsPic.setOnClickListener(v -> {
             MultiImageSelector.create()
                     .single()

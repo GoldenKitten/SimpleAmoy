@@ -54,7 +54,7 @@ public class FirstPagerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mActivity=getActivity();
+
         View view = inflater.inflate(R.layout.fragment_first_pager,
                 container,false);
         mRecyclerView=(RecyclerView) view.findViewById(R.id.rv_ffp);
@@ -62,6 +62,12 @@ public class FirstPagerFragment extends Fragment {
                // R.drawable.circle_elves_ball);
        // mHeadImage= RxImageTool.drawable2Bytes(drawable, Bitmap.CompressFormat.PNG);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mActivity=getActivity();
     }
 
     @Override
@@ -83,20 +89,17 @@ public class FirstPagerFragment extends Fragment {
                 FirstPagerAdapter firstPagerAdapter=new FirstPagerAdapter(
                         R.layout.fragment_first_pager_item,
                         firstPagerGoods);
-                firstPagerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        FragmentTransaction transaction=mFManager.beginTransaction();
-                        BuyGoodsFragment buyGoodsFragment=BuyGoodsFragment
-                                .newInstance(mFManager,
-                                        firstPagerGoods.get(position).getUserName(),
-                                        firstPagerGoods.get(position).getGoodsUUID());
-                        transaction.replace(R.id.fl_content,buyGoodsFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                        //initToolbar("首页");
+                firstPagerAdapter.setOnItemClickListener((adapter, view, position) -> {
+                    FragmentTransaction transaction=mFManager.beginTransaction();
+                    BuyGoodsFragment buyGoodsFragment=BuyGoodsFragment
+                            .newInstance(mFManager,
+                                    firstPagerGoods.get(position).getUserName(),
+                                    firstPagerGoods.get(position).getGoodsUUID());
+                    transaction.replace(R.id.fl_content,buyGoodsFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    //initToolbar("首页");
 
-                    }
                 });
                 mRecyclerView.setAdapter(firstPagerAdapter);
 

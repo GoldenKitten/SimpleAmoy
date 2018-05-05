@@ -32,10 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--Image Selector Entry-->
+        <!-- Image Selector Entry -->
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -53,7 +53,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyTheme" />
         <activity android:name=".activity.EmailActivity" />
-        <activity android:name=".activity.PersonDataActivity"></activity>
+        <activity android:name=".activity.PersonDataActivity" />
+        <activity
+            android:name=".activity.MyIssueActivity"
+            android:theme="@style/MyTheme" />
+        <activity android:name=".activity.MyBuyActivity"
+            android:theme="@style/MyTheme"/>
+        <activity android:name=".activity.MySellActivity"
+            android:theme="@style/MyTheme"></activity>
     </application>
 
 </manifest>

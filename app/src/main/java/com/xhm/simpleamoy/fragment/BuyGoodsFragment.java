@@ -58,7 +58,7 @@ public class BuyGoodsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mActivity = getActivity();
+
         View view = inflater.inflate(R.layout.fragment_buy_goods,
                 container, false);
         if(mViewHolder==null) {
@@ -66,6 +66,12 @@ public class BuyGoodsFragment extends Fragment {
         }
         EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mActivity = getActivity();
     }
 
     @Override

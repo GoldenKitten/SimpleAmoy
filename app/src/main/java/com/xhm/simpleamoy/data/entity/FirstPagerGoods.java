@@ -10,6 +10,15 @@ public class FirstPagerGoods {
     private byte[] goodsImage;
     private String goodsTitle;
     private String goodsPrice;
+    private boolean isChecked=false;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     public byte[] getGoodsImage() {
         return goodsImage;
