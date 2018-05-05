@@ -9,6 +9,8 @@ import java.util.UUID;
  */
 
 public class IssueGoods {
+    private String buyUserName="";
+    private boolean isByBuy=false;
     private String goodsUUID;
     private String userName;
     private String schoolAddress;
@@ -26,6 +28,22 @@ public class IssueGoods {
                 .toString()
                 .replace("-", "")
                 .toLowerCase();
+    }
+
+    public String getBuyUserName() {
+        return buyUserName;
+    }
+
+    public void setBuyUserName(String buyUserName) {
+        this.buyUserName = buyUserName;
+    }
+
+    public boolean isByBuy() {
+        return isByBuy;
+    }
+
+    public void setByBuy(boolean byBuy) {
+        isByBuy = byBuy;
     }
 
     public byte[] getMainGoodsPic() {

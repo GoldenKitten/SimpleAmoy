@@ -29,6 +29,8 @@ public abstract class IssueFun {
     public void issue(){
 
         AVObject products =new AVObject("Products");
+        products.put("buyUserName",mIssueGoods.getBuyUserName());
+        products.put("isByBuy",mIssueGoods.isByBuy());
         products.put("userName",mIssueGoods.getUserName());
         products.put("schoolAddress",mIssueGoods.getSchoolAddress());
         products.put("goodsUUID",mIssueGoods.getGoodsUUID());
@@ -38,12 +40,18 @@ public abstract class IssueFun {
         products.put("weixing",mIssueGoods.getWeixing());
         products.put("qq",mIssueGoods.getQq());
         products.put("mobile",mIssueGoods.getMobile());
-        products.put("mainGoodsPic",new AVFile(mIssueGoods.getUserName()+".productpic",mIssueGoods.getMainGoodsPic()));
+        products.put("mainGoodsPic",new AVFile(mIssueGoods.getUserName()+
+                mIssueGoods.getGoodsUUID()+
+                ".productpic",
+                mIssueGoods.getMainGoodsPic()));
         if (!(mIssueGoods.getGoodsPic()==null)) {
             int i = mIssueGoods.getGoodsPic().size();
             ArrayList arrayList = new ArrayList();
             for (int j = 0; j < i; j++) {
-                AVFile avFile = new AVFile(mIssueGoods.getUserName() + ".goodsPic", mIssueGoods.getGoodsPic().get(j));
+                AVFile avFile = new AVFile(mIssueGoods.getUserName() +
+                        mIssueGoods.getGoodsUUID()+
+                        ".goodsPic",
+                        mIssueGoods.getGoodsPic().get(j));
                 avFile.saveInBackground();
                 arrayList.add(avFile);
 
