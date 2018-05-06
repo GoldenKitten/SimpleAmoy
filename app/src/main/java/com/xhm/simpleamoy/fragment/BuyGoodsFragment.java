@@ -60,13 +60,13 @@ public class BuyGoodsFragment extends Fragment {
         mFManager = fManager;
         if (mBuyGoodsFragment == null) {
             mBuyGoodsFragment = new BuyGoodsFragment();
+            EventBus.getDefault().register(mBuyGoodsFragment);
         }
         return mBuyGoodsFragment;
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
         View view = inflater.inflate(R.layout.fragment_buy_goods,
                 container, false);
             mViewHolder = new ViewHolder(view);

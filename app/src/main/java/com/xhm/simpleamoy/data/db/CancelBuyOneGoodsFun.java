@@ -14,6 +14,7 @@ public abstract class CancelBuyOneGoodsFun {
     }
 
     public void cancelBuyOneGoods(){
+
     }
     public abstract void cancelBuyOneGoodsSucess();
     public abstract void cancelBuyOneGoodsFaild(String msg);

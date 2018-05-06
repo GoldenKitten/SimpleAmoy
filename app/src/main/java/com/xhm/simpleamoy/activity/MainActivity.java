@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity {
                     FragmentTransaction iTransaction = mFragmentManager.beginTransaction();
                     IssueFragment issueFragment = IssueFragment.newInstance
                             (mFragmentManager);
-                    EventBus.getDefault().register(issueFragment);
+                    //EventBus.getDefault().register(issueFragment);
                     iTransaction.replace(R.id.fl_content,issueFragment);
                     //transaction.addToBackStack(null);
                     iTransaction.commit();
