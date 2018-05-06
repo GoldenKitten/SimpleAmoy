@@ -117,9 +117,9 @@ public class MyIssueActivity extends BaseActivity {
         for(FirstPagerGoods firstPagerGoods:mFirstPagerGoods){
             if(firstPagerGoods.isChecked()){
                 mFirstPagerGoodsDelete.add(firstPagerGoods);
-                mFirstPagerGoods.remove(firstPagerGoods);
             }
         }
+        mFirstPagerGoods.removeAll(mFirstPagerGoodsDelete);
         RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
         rxDialogLoading.setLoadingText("删除中 ...");
         rxDialogLoading.setCancelable(false);

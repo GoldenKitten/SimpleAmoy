@@ -74,8 +74,9 @@ public class MyBuyActivity extends BaseActivity {
                             buyGoods.setSellUUID(firstPagerGoods.get(position).getGoodsUUID());
                             buyGoods.setSellUserName(firstPagerGoods.get(position).getUserName());
                             Event<BuyGoods> event=new Event<BuyGoods>("MYBUYITEM",buyGoods);
+                            EventBus.getDefault().postSticky(event);//发送粘性事件
                             RxActivityTool.skipActivity(mContext,MyBuyItemActivity.class);
-                            EventBus.getDefault().post(event);
+
                         });
                         rvAmb.setAdapter(firstPagerAdapter);
 

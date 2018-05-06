@@ -77,7 +77,7 @@ public class MyBuyItemActivity extends BaseActivity {
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void eventDeal(Event<BuyGoods> event) {
         if (event.getMsg().equals("MYBUYITEM")) {
             mBuyGoods=event.getData();
