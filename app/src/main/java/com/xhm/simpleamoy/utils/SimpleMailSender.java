@@ -5,7 +5,6 @@ import com.xhm.simpleamoy.data.entity.MailSenderInfo;
 
 import java.util.Date;
 import java.util.Properties;
-
 import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.BodyPart;
@@ -23,25 +22,32 @@ import javax.mail.internet.MimeMultipart;
 /**
  * Created by xhm on 2018/5/4.
  */
-public class SimpleMailSender {
+public abstract class SimpleMailSender {
+
+    public SimpleMailSender(MailSenderInfo mailSenderInfo) {
+        sendTextMail(mailSenderInfo);
+    }
+
     /**
      * 以文本格式发送邮件
      *
      * @param mailInfo 待发送的邮件的信息
      */
-    public boolean sendTextMail(MailSenderInfo mailInfo) {
+
+    public void sendTextMail(MailSenderInfo mailInfo) {
         // 判断是否需要身份认证
-        MyAuthenticator authenticator = null;
-        Properties pro = mailInfo.getProperties();
-        if (mailInfo.isValidate()) {
-            // 如果需要身份认证，则创建一个密码验证器
-            authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
-        }
-        // 根据邮件会话属性和密码验证器构造一个发送邮件的session
-        Session sendMailSession = Session.getDefaultInstance(pro, authenticator);
         try {
+            MyAuthenticator authenticator = null;
+            Properties pro = mailInfo.getProperties();
+            if (mailInfo.isValidate()) {
+                // 如果需要身份认证，则创建一个密码验证器
+                authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
+            }
+            // 根据邮件会话属性和密码验证器构造一个发送邮件的session
+            Session sendMailSession = Session.getDefaultInstance(pro, authenticator);
+
             // 根据session创建一个邮件消息
-            Message mailMessage = new MimeMessage(sendMailSession);
+            final Message mailMessage = new MimeMessage(sendMailSession);
             // 创建邮件发送者地址
             Address from = new InternetAddress(mailInfo.getFromAddress());
             // 设置邮件消息的发送者
@@ -57,12 +63,21 @@ public class SimpleMailSender {
             String mailContent = mailInfo.getContent();
             mailMessage.setText(mailContent);
             // 发送邮件
-            Transport.send(mailMessage);
-            return true;
-        } catch (MessagingException ex) {
-            ex.printStackTrace();
+            new Thread(() -> {
+                try {
+
+                    Transport.send(mailMessage);
+                    sendSucess();
+                } catch (MessagingException ex) {
+                    ex.printStackTrace();
+                    sendFailed("发送失败，请重新发送");
+                }
+            }).start();
         }
-        return false;
+    catch(Exception e){
+        sendFailed(e.toString());
+    }
+
     }
 
     /**
@@ -70,7 +85,7 @@ public class SimpleMailSender {
      *
      * @param mailInfo 待发送的邮件信息
      */
-    public static boolean sendHtmlMail(MailSenderInfo mailInfo) {
+    public  boolean sendHtmlMail(MailSenderInfo mailInfo) {
         // 判断是否需要身份认证
         MyAuthenticator authenticator = null;
         Properties pro = mailInfo.getProperties();
@@ -112,6 +127,8 @@ public class SimpleMailSender {
         }
         return false;
     }
+    public abstract void sendSucess();
+    public abstract void sendFailed(String msg);
 }
 class MyAuthenticator extends Authenticator {
     String userName = null;

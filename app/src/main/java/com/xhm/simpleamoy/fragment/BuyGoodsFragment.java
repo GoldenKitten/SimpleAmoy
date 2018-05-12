@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.vondear.rxtools.RxLogTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
@@ -58,10 +59,8 @@ public class BuyGoodsFragment extends Fragment {
         mUserName=userName;
         mGoodsUUID=goodsUUID;
         mFManager = fManager;
-        if (mBuyGoodsFragment == null) {
-            mBuyGoodsFragment = new BuyGoodsFragment();
-            EventBus.getDefault().register(mBuyGoodsFragment);
-        }
+        mBuyGoodsFragment = new BuyGoodsFragment();
+        EventBus.getDefault().register(mBuyGoodsFragment);
         return mBuyGoodsFragment;
     }
     @Nullable
@@ -161,6 +160,7 @@ public class BuyGoodsFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getOneGoods(Event<Object> event){
         if(event.getMsg().equals("OneGoods")){
+            RxLogTool.i("OneGoods");
             IssueGoods issueGoods= (IssueGoods) event.getData();
             Glide.with(mActivity)
                     .load(issueGoods.getMainGoodsPic())
@@ -199,6 +199,7 @@ public class BuyGoodsFragment extends Fragment {
                 mViewHolder.btFbgScheduleCenter.setVisibility(View.GONE);
                 mViewHolder.btFbgCancelSchedule.setVisibility(View.VISIBLE);
             }
+
             mViewHolder.tvFbgUsername.setText(issueGoods.getUserName());
             mViewHolder.rvFbgGoodsPic.setLayoutManager(
                     new LinearLayoutManager(mActivity));
@@ -239,7 +240,7 @@ public class BuyGoodsFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    static class ViewHolder {
+     class ViewHolder {
         @BindView(R.id.iv_fbg_main_goods_pic)
         ImageView ivFbgMainGoodsPic;
         @BindView(R.id.tv_fbg_goods_name)

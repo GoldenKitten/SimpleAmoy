@@ -18,10 +18,15 @@ import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.GetMailInfo;
+import com.xhm.simpleamoy.data.entity.Event;
 import com.xhm.simpleamoy.data.entity.MailInfo;
 import com.xhm.simpleamoy.data.entity.MailSenderInfo;
 import com.xhm.simpleamoy.utils.SimpleMailSender;
 import com.xhm.simpleamoy.utils.Validator;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +50,7 @@ public class EmailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         initToolbar("忘记密码", R.drawable.ic_back);
         getCustomToolbar().setNavigationOnClickListener(v ->
                 RxActivityTool.finishActivity(this));
@@ -54,7 +60,7 @@ public class EmailActivity extends BaseActivity {
     public void onViewClicked() {
         if(checkInfo(tietUsername.getText().toString(),
                 tletEmail.getText().toString())){
-            RxDialogLoading rxDialogLoading = new RxDialogLoading(this);
+            final RxDialogLoading rxDialogLoading = new RxDialogLoading(this);
             rxDialogLoading.setLoadingText("验证中...");
             rxDialogLoading.setCancelable(false);
             rxDialogLoading.show();
@@ -62,15 +68,9 @@ public class EmailActivity extends BaseActivity {
                     tletEmail.getText().toString()){
                 @Override
                 public void getMailInfoSucess(MailInfo mailInfo) {
-                    rxDialogLoading.setLoadingText("邮件发送中...");
-                    if(sendEmail(mailInfo)){
-                        rxDialogLoading.cancel();
-                        RxToast.success("请前往你的邮箱获取密码");
-                    }
-                    else {
-                        rxDialogLoading.cancel();
-                        RxToast.error("邮件发送失败，请重新发送");
-                    }
+                    rxDialogLoading.cancel();
+                    Event<Object> event=new Event<Object>("GetMainSucess",mailInfo);
+                    EventBus.getDefault().post(event);
                 }
 
                 @Override
@@ -79,9 +79,63 @@ public class EmailActivity extends BaseActivity {
                     RxToast.error(msg);
                 }
             }).start();
+
+
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void myEvent(Event<Object> event){
+        if(event.getMsg().equals("GetMainSucess")){
+            MailInfo mailInfo= (MailInfo) event.getData();
+            final RxDialogLoading rxDialogLoading = new RxDialogLoading(this);
+            rxDialogLoading.setCancelable(false);
+            rxDialogLoading.setLoadingText("邮件发送中...");
+            rxDialogLoading.show();
+            try {
+                MailSenderInfo mailSenderInfo = new MailSenderInfo();
+                mailSenderInfo.setMailServerHost("smtp.163.com");
+                mailSenderInfo.setMailServerPort("25");
+                mailSenderInfo.setValidate(true);
+                mailSenderInfo.setUserName("simpleamoyofficial@163.com");  //你的邮箱地址
+                mailSenderInfo.setPassword("SimpleAmoy163");//您的邮箱密码
+                mailSenderInfo.setFromAddress("simpleamoyofficial@163.com");//和上面username的邮箱地址一致
+                mailSenderInfo.setToAddress(mailInfo.getEmailAddress());
+                mailSenderInfo.setSubject("恭喜"+mailInfo.getUserName()+"成功找回密码");
+                mailSenderInfo.setContent("你的密码是:"+mailInfo.getPassword());
 
+                //这个类主要来发送邮件
+                new SimpleMailSender(mailSenderInfo){
+                    @Override
+                    public void sendSucess() {
+                        rxDialogLoading.cancel();
+                        Event<Object> event1=new Event<Object>("EmailSendSucess",null);
+                        EventBus.getDefault().post(event1);
+
+                    }
+
+                    @Override
+                    public void sendFailed(String msg) {
+                        rxDialogLoading.cancel();
+                        Event<Object> event1=new Event<Object>("EmailSendFailed",msg);
+                        EventBus.getDefault().post(event1);
+
+                    }
+                };
+
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+                rxDialogLoading.cancel();
+                RxToast.error(mContext,e.toString());
+            }
+        }
+        if(event.getMsg().equals("EmailSendSucess")){
+            RxToast.success("请前往你的邮箱获取密码");
+        }
+        if(event.getMsg().equals("EmailSendFailed")){
+            RxToast.error("邮件发送失败，请重新发送");
+        }
+
+    }
     private boolean checkInfo(String username,String mailAddress) {
         if(TextUtils.isEmpty(username)){
             RxToast.error("用户名不能为空");
@@ -104,28 +158,9 @@ public class EmailActivity extends BaseActivity {
         return true;
     }
 
-    private boolean sendEmail(MailInfo myMailInfo) {
-        try {
-            MailSenderInfo mailInfo = new MailSenderInfo();
-            mailInfo.setMailServerHost("smtp.163.com");
-            mailInfo.setMailServerPort("25");
-            mailInfo.setValidate(true);
-            mailInfo.setUserName("SimpleAmoyOfficial@163.com");  //你的邮箱地址
-            mailInfo.setPassword("SimpleAmoy163");//您的邮箱密码
-            mailInfo.setFromAddress("SimpleAmoyOfficial@163.com");//和上面username的邮箱地址一致
-            mailInfo.setToAddress(myMailInfo.getEmailAddress());
-            mailInfo.setSubject("恭喜"+myMailInfo.getUserName()+"成功找回密码");
-            mailInfo.setContent("你的密码是:"+myMailInfo.getPassword());
-
-            //这个类主要来发送邮件
-            SimpleMailSender sms = new SimpleMailSender();
-            boolean b = sms.sendTextMail(mailInfo);//发送文体格式,返回是否发送成功的boolean类型
-
-            //Log.e("MainActivity", "MainActivity sendEmail()" + b);//sms.sendHtmlMail(mailInfo);//发送html格式
-            return b;
-        } catch (Exception e) {
-            Log.e("SendMail", e.getMessage(), e);
-            return false;
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

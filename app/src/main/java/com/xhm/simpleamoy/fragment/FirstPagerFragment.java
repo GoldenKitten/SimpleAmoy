@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.vondear.rxtools.RxFragmentTool;
 import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
@@ -99,6 +100,7 @@ public class FirstPagerFragment extends Fragment {
                     transaction.addToBackStack(null);
                     transaction.commit();
                     //initToolbar("首页");
+
 
                 });
                 mRecyclerView.setAdapter(firstPagerAdapter);

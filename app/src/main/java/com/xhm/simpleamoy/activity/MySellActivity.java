@@ -85,20 +85,17 @@ public class MySellActivity extends BaseActivity {
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void MyEvent(Event<Object> event){
+    public void myEvent(Event<Object> event){
         if(event.getMsg().equals("GetSellGoodsSucess")){
             mMySellAdapter = new MySellAdapter(
                     R.layout.activity_my_sell_item,mSellGoodsList);
             rvAms.setLayoutManager(new LinearLayoutManager(this));
             rvAms.setAdapter(mMySellAdapter);
-            mMySellAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    mSellGoodsList.get(position).setChecked(
-                            !mSellGoodsList.get(position).isChecked()
-                    );
-                    mMySellAdapter.notifyDataSetChanged();
-                }
+            mMySellAdapter.setOnItemClickListener((adapter, view, position) -> {
+                mSellGoodsList.get(position).setChecked(
+                        !mSellGoodsList.get(position).isChecked()
+                );
+                mMySellAdapter.notifyDataSetChanged();
             });
         }
         if(event.getMsg().equals("CancelSellGoodsFun")){

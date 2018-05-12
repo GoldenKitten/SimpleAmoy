@@ -40,6 +40,7 @@ public abstract class CancelBuyOneGoodsFun {
                             todo.put("isByBuy",false);
                             todo.put("buyUserName",null);
                             todo.saveInBackground();
+                            cancelBuyOneGoodsSucess();
 
                         }
                         else cancelBuyOneGoodsFaild("错误！");

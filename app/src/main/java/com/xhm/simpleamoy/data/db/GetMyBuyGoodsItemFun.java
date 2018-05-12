@@ -57,31 +57,10 @@ public abstract class GetMyBuyGoodsItemFun {
                             });
                         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    } else getMyBuyGoodsItemFaild("暂时无购买商品！");
+                    } else {//getMyBuyGoodsItemFaild("暂时无购买商品！");
+                        mFirstPagerGoods=new ArrayList<>();
+                        getMyBuyGoodsItemSucess(mFirstPagerGoods);
+                    }
                 } else getMyBuyGoodsItemFaild(e.getMessage());
 
 

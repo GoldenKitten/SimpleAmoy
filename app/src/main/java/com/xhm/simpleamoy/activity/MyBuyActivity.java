@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.RxLogTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
@@ -39,6 +40,7 @@ public class MyBuyActivity extends BaseActivity {
     @BindView(R.id.rv_amb)
     RecyclerView rvAmb;
     private Activity mActivity;
+    private FirstPagerAdapter mFirstPagerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,14 @@ public class MyBuyActivity extends BaseActivity {
         initToolbar("我的购买", R.drawable.ic_back);
         getCustomToolbar().setNavigationOnClickListener(v ->
                 RxActivityTool.finishActivity(this));
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mActivity=this;
+        RxLogTool.i("InitData");
         initData();
     }
 
@@ -66,10 +76,10 @@ public class MyBuyActivity extends BaseActivity {
                     @Override
                     public void getMyBuyGoodsItemSucess(List<FirstPagerGoods> firstPagerGoods) {
                         rxDialogLoading.cancel();
-                        FirstPagerAdapter firstPagerAdapter = new FirstPagerAdapter(
+                        mFirstPagerAdapter = new FirstPagerAdapter(
                                 R.layout.fragment_first_pager_item,
                                 firstPagerGoods);
-                        firstPagerAdapter.setOnItemClickListener((adapter, view, position) -> {
+                        mFirstPagerAdapter.setOnItemClickListener((adapter, view, position) -> {
                             BuyGoods buyGoods=new BuyGoods();
                             buyGoods.setSellUUID(firstPagerGoods.get(position).getGoodsUUID());
                             buyGoods.setSellUserName(firstPagerGoods.get(position).getUserName());
@@ -78,7 +88,7 @@ public class MyBuyActivity extends BaseActivity {
                             RxActivityTool.skipActivity(mContext,MyBuyItemActivity.class);
 
                         });
-                        rvAmb.setAdapter(firstPagerAdapter);
+                        rvAmb.setAdapter(mFirstPagerAdapter);
 
                     }
 

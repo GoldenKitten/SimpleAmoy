@@ -3,6 +3,7 @@ package com.xhm.simpleamoy.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -126,10 +127,13 @@ public class MainActivity extends BaseActivity {
                     rxDialogSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            RxActivityTool.skipActivityAndFinish(
+                            RxSPTool.putBoolean(MyApp.newInstance(),
+                                    C.Splash.IS_LOGIN,false);
+                            RxActivityTool.skipActivity(
                                     MainActivity.this,
                                     LoginActivity.class
                             );
+                            RxActivityTool.finishActivity(mContext);
                         }
                     });
                     rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
@@ -223,5 +227,10 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        //super.onSaveInstanceState(outState, outPersistentState);
     }
 }
