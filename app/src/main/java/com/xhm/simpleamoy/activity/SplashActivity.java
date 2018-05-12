@@ -97,11 +97,11 @@ public class  SplashActivity extends BaseActivity {
                     RxActivityTool.skipActivity(SplashActivity.this,
                             MainActivity.class);
                 }
-                /*if(true){
-                    RxActivityTool.skipActivityAndFinish(SplashActivity.this,
-                            MainActivity.class);
-                }*/
                 else {
+                    RxSPTool.putString(MyApp.newInstance(),
+                            C.Splash.USERNAME,"");
+                    RxSPTool.putString(MyApp.newInstance(),
+                            C.Splash.PASSWORD,"");
                     RxActivityTool.finishActivity(SplashActivity.this);
                     RxActivityTool.skipActivity(SplashActivity.this,
                             LoginActivity.class);

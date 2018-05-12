@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.RxLogTool;
 import com.vondear.rxtools.RxRegTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
@@ -98,7 +99,8 @@ public class EmailActivity extends BaseActivity {
                 mailSenderInfo.setValidate(true);
                 mailSenderInfo.setUserName("simpleamoyofficial@163.com");  //你的邮箱地址
                 mailSenderInfo.setPassword("SimpleAmoy163");//您的邮箱密码
-                mailSenderInfo.setFromAddress("simpleamoyofficial@163.com");//和上面username的邮箱地址一致
+                mailSenderInfo.setFromAddress("simpleamoyofficial@163.com");
+                //和上面username的邮箱地址一致
                 mailSenderInfo.setToAddress(mailInfo.getEmailAddress());
                 mailSenderInfo.setSubject("恭喜"+mailInfo.getUserName()+"成功找回密码");
                 mailSenderInfo.setContent("你的密码是:"+mailInfo.getPassword());
@@ -129,7 +131,8 @@ public class EmailActivity extends BaseActivity {
             }
         }
         if(event.getMsg().equals("EmailSendSucess")){
-            RxToast.success("请前往你的邮箱获取密码");
+            RxToast.success("请前往你的邮箱获取密码,如果未收到邮件," +
+                    "请查看垃圾箱里是否有该邮件");
         }
         if(event.getMsg().equals("EmailSendFailed")){
             RxToast.error("邮件发送失败，请重新发送");
