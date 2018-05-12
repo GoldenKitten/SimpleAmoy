@@ -8,7 +8,7 @@
         android:id="@+id/iv_fbgi"
         android:layout_width="315dp"
         android:layout_height="315dp"
-        android:background="@drawable/circle_elves_ball"
+        android:src="@drawable/circle_elves_ball"
         android:layout_centerInParent="true"/>
 
 </RelativeLayout>

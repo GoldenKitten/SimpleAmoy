@@ -74,7 +74,7 @@ public class IssueFragment extends Fragment {
         if(mViewHolder==null) {
             mViewHolder = new ViewHolder(view);
         }
-
+        EventBus.getDefault().register(this);
         return view;
     }
 

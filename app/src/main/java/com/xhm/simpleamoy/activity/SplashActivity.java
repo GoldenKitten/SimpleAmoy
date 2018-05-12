@@ -22,7 +22,7 @@ import com.xhm.simpleamoy.utils.LoadAssets;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SplashActivity extends BaseActivity {
+public class  SplashActivity extends BaseActivity {
 
     @BindView(R.id.rl_as_root)
     RelativeLayout rlAsRoot;
