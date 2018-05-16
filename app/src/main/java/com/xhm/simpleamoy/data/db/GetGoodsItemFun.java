@@ -67,7 +67,10 @@ public abstract class GetGoodsItemFun {
                                 }
                             });
                         }
-                    } else getGoodsItemFaild("没有该校商品！");
+                    } else {
+                        //getGoodsItemFaild("没有该校商品！");
+                        getGoodsItemSucess(mFirstPagerGoods);
+                    }
                 } else getGoodsItemFaild(e.getMessage());
             }
 
