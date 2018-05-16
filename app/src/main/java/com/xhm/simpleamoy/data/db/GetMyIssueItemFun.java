@@ -60,7 +60,9 @@ public abstract class GetMyIssueItemFun {
                                 }
                             });
                         }
-                    } else getMyIssueItemFaild("暂无发布！");
+                    } else {
+                        getMyIssueItemSucess(mFirstPagerGoods);
+                    }
                 } else getMyIssueItemFaild(e.getMessage());
             }
 

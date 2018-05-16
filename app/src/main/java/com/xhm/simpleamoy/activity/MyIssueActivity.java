@@ -94,6 +94,13 @@ public class MyIssueActivity extends BaseActivity {
             mMyIssueAdapter = new MyIssueAdapter(R.layout.activity_my_common,
                     mFirstPagerGoods);
             rvAmi.setAdapter(mMyIssueAdapter);
+            if(mFirstPagerGoods.size()==0){
+                RxToast.success("暂无发布");
+                btAmiDelete.setEnabled(false);
+            }
+            else {
+                btAmiDelete.setEnabled(true);
+            }
             mMyIssueAdapter.setOnItemClickListener((adapter, view, position) -> {
                 mFirstPagerGoods.get(position).setChecked(
                         !mFirstPagerGoods.get(position).isChecked()

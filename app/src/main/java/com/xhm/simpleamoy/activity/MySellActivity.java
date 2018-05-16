@@ -91,6 +91,13 @@ public class MySellActivity extends BaseActivity {
                     R.layout.activity_my_sell_item,mSellGoodsList);
             rvAms.setLayoutManager(new LinearLayoutManager(this));
             rvAms.setAdapter(mMySellAdapter);
+            if(mSellGoodsList.size()==0){
+                RxToast.success("暂无卖出商品");
+                btAmsCancel.setEnabled(false);
+            }
+            else {
+                btAmsCancel.setEnabled(true);
+            }
             mMySellAdapter.setOnItemClickListener((adapter, view, position) -> {
                 mSellGoodsList.get(position).setChecked(
                         !mSellGoodsList.get(position).isChecked()
