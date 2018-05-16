@@ -46,9 +46,7 @@ public class FirstPagerFragment extends Fragment {
 
     public static FirstPagerFragment newInstance(FragmentManager fManager){
         mFManager=fManager;
-        if(mFirstPagerFragment==null){
             mFirstPagerFragment=new FirstPagerFragment();
-        }
         return mFirstPagerFragment;
     }
 

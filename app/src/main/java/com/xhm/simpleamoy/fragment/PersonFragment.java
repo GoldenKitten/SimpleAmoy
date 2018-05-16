@@ -31,9 +31,7 @@ public class PersonFragment extends Fragment {
     private ViewHolder mViewHolder;
     public static PersonFragment newInstance(FragmentManager fManager) {
         mFManager = fManager;
-        if (mPersonFragment == null) {
             mPersonFragment = new PersonFragment();
-        }
         return mPersonFragment;
     }
 
