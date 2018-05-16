@@ -60,9 +60,7 @@ public class IssueFragment extends Fragment {
 
     public static IssueFragment newInstance(FragmentManager fManager) {
         mFManager = fManager;
-        if (mIssueFragment == null) {
             mIssueFragment = new IssueFragment();
-        }
         return mIssueFragment;
     }
 

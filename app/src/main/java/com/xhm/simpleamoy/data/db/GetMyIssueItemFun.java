@@ -24,8 +24,8 @@ public abstract class GetMyIssueItemFun {
 
     public void getMyIssueItem()
     {
-      mFirstPagerGoods=new ArrayList<FirstPagerGoods>();
-      AVQuery avQuery=new AVQuery("Products");
+       mFirstPagerGoods=new ArrayList<FirstPagerGoods>();
+       AVQuery avQuery=new AVQuery("Products");
        avQuery.whereEqualTo("userName", mUserName);
        avQuery.findInBackground(new FindCallback()
         {
@@ -60,7 +60,7 @@ public abstract class GetMyIssueItemFun {
                                 }
                             });
                         }
-                    } else getMyIssueItemFaild("没有商品！");
+                    } else getMyIssueItemFaild("暂无发布！");
                 } else getMyIssueItemFaild(e.getMessage());
             }
 

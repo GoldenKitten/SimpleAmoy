@@ -58,7 +58,8 @@ public abstract class GetOneGoodsFun {
                         AVFile mainpic = avObject.getAVFile("mainGoodsPic");
                         mainpic.getDataInBackground(new GetDataCallback() {
                             @Override
-                            public void done(byte[] bytes, AVException e) {
+                            public void done(byte[] bytes, AVException e)
+                            {
                                 if (e == null) {
                                     Log.i("haha2","2");
                                     mIssueGoods.setMainGoodsPic(bytes);
@@ -67,9 +68,11 @@ public abstract class GetOneGoodsFun {
                                     avQuery1.findInBackground(new FindCallback() {
                                         @Override
                                         public void done(List list, AVException e) {
-                                          if (e == null) {
+                                          if (e == null)
+                                          {
 
-                                               if (!list.isEmpty()) {
+                                               if (!list.isEmpty())
+                                               {
                                                     Log.d("", "done: "+list.size());
                                                     ArrayList arrayList = new ArrayList();
                                                     for (int i = 0; i < list.size(); i++) {
@@ -88,7 +91,11 @@ public abstract class GetOneGoodsFun {
                                                             }
                                                         });
                                                     }
-                                                } else getGoodsItemFaild("无该商品图片！");
+                                                } else {
+
+                                                   mIssueGoods.setGoodsPic(null);
+                                                   getGoodsItemSucess(mIssueGoods);
+                                               }
 
 
                                             } else getGoodsItemFaild(e.getMessage());
