@@ -100,7 +100,7 @@ public class MySellActivity extends BaseActivity {
         }
         if(event.getMsg().equals("CancelSellGoodsFun")){
             RxToast.success("取消预定成功");
-            mMySellAdapter.notifyDataSetChanged();
+            init();
         }
     }
     @OnClick(R.id.bt_ams_cancel)
@@ -115,7 +115,6 @@ public class MySellActivity extends BaseActivity {
                 mSellGoodsCancelList.add(sellGoods);
             }
         }
-        mSellGoodsList.removeAll(mSellGoodsCancelList);
         new Thread(() -> new CancelSellGoodsFun(mSellGoodsCancelList){
             @Override
             public void cancelSellGoodsSucess() {

@@ -58,6 +58,9 @@
         android:textSize="20sp"
         android:textColor="#f00"/>
     <CheckBox
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:id="@+id/cb_amsi"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"

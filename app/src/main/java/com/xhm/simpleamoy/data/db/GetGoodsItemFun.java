@@ -20,8 +20,10 @@ import java.util.List;
 public abstract class GetGoodsItemFun {
     private List<FirstPagerGoods> mFirstPagerGoods;
     private String mSchoolAddress;
-    public GetGoodsItemFun(String schoolAddress) {
+    private String mUserName;
+    public GetGoodsItemFun(String schoolAddress,String username) {
         mSchoolAddress=schoolAddress;
+        mUserName=username;
         getGoodsItem();
     }
 
@@ -30,6 +32,8 @@ public abstract class GetGoodsItemFun {
       mFirstPagerGoods=new ArrayList<FirstPagerGoods>();
       AVQuery avQuery=new AVQuery("Products");
        avQuery.whereEqualTo("schoolAddress", mSchoolAddress);
+
+       avQuery.whereNotEqualTo("userName",mUserName);
        avQuery.findInBackground(new FindCallback()
         {
             @Override

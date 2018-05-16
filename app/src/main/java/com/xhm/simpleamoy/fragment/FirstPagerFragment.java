@@ -40,13 +40,13 @@ import java.util.List;
 public class FirstPagerFragment extends Fragment {
     private Activity mActivity;
     private static FragmentManager mFManager;
-    private static FirstPagerFragment mFirstPagerFragment;
+    private  static FirstPagerFragment mFirstPagerFragment;
     private RecyclerView mRecyclerView;
     //private byte[] mHeadImage;
 
     public static FirstPagerFragment newInstance(FragmentManager fManager){
         mFManager=fManager;
-            mFirstPagerFragment=new FirstPagerFragment();
+        mFirstPagerFragment=new FirstPagerFragment();
         return mFirstPagerFragment;
     }
 
@@ -81,7 +81,9 @@ public class FirstPagerFragment extends Fragment {
                 new GetGoodsItemFun(
                         RxSPTool.getString(
                                 MyApp.newInstance(),
-                                C.Splash.SCHOOLADDRESS)){
+                                C.Splash.SCHOOLADDRESS),
+                        RxSPTool.getString(MyApp.newInstance(),
+                                C.Splash.USERNAME)){
             @Override
             public void getGoodsItemSucess(List<FirstPagerGoods> firstPagerGoods) {
                 rxDialogLoading.cancel();

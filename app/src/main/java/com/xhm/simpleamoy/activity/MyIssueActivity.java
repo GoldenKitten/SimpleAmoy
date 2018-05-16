@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.RxLogTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
@@ -93,19 +94,17 @@ public class MyIssueActivity extends BaseActivity {
             mMyIssueAdapter = new MyIssueAdapter(R.layout.activity_my_common,
                     mFirstPagerGoods);
             rvAmi.setAdapter(mMyIssueAdapter);
-            mMyIssueAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    mFirstPagerGoods.get(position).setChecked(
-                            !mFirstPagerGoods.get(position).isChecked()
-                    );
-                    mMyIssueAdapter.notifyDataSetChanged();
-                }
+            mMyIssueAdapter.setOnItemClickListener((adapter, view, position) -> {
+                mFirstPagerGoods.get(position).setChecked(
+                        !mFirstPagerGoods.get(position).isChecked()
+                );
+                RxLogTool.i(mFirstPagerGoods.get(position).isChecked());
+                mMyIssueAdapter.notifyDataSetChanged();
             });
 
         }
         if(event.getMsg().equals("deleteSucess")){
-            mMyIssueAdapter.notifyDataSetChanged();
+           init();
         }
         if(event.getMsg().equals("deleteFailed")){
             mFirstPagerGoods.addAll(mFirstPagerGoodsDelete);
@@ -119,7 +118,7 @@ public class MyIssueActivity extends BaseActivity {
                 mFirstPagerGoodsDelete.add(firstPagerGoods);
             }
         }
-        mFirstPagerGoods.removeAll(mFirstPagerGoodsDelete);
+        RxLogTool.i(mFirstPagerGoodsDelete.size());
         RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
         rxDialogLoading.setLoadingText("删除中 ...");
         rxDialogLoading.setCancelable(false);

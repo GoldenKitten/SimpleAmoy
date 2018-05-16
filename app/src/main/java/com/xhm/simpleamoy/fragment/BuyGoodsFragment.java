@@ -83,7 +83,7 @@ public class BuyGoodsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mViewHolder=new ViewHolder(getView());
+        //mViewHolder=new ViewHolder(getView());
         RxDialogLoading rxDialogLoading = new RxDialogLoading(mActivity);
         rxDialogLoading.setLoadingText("加载中 ...");
         rxDialogLoading.setCancelable(false);
