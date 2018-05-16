@@ -60,7 +60,7 @@ public abstract class GetMyIssueItemFun {
                                 }
                             });
                         }
-                    } else getMyIssueItemFaild("没有商品！");
+                    } else getMyIssueItemFaild("暂无发布！");
                 } else getMyIssueItemFaild(e.getMessage());
             }
 

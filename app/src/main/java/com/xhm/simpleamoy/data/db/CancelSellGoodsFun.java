@@ -35,7 +35,7 @@ public abstract class CancelSellGoodsFun {
 
 
 
-        
+
     }
     public abstract void cancelSellGoodsSucess();
     public abstract void cancelSellGoodsFaild(String msg);
