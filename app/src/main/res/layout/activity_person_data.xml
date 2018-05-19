@@ -1,10 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.xhm.simpleamoy.activity.PersonDataActivity"
     android:background="@drawable/person_data_bg">
+    <include layout="@layout/custom_toolbar"/>
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:id="@+id/ll_apd_root"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/shape_corner">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户名:" />
+
+            <EditText
+                android:id="@+id/et_apd_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="学    校:" />
+
+                <EditText
+                    android:id="@+id/et_apd_school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邮    箱:" />
+
+                <EditText
+                    android:id="@+id/et_apd_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+    </LinearLayout>
+        <Button
+            android:id="@+id/bt_apd_modify"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_corner"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/ll_apd_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改"/>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

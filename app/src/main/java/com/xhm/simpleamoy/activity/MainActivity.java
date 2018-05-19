@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.vondear.rxtools.RxPhotoTool;
 import com.vondear.rxtools.RxSPTool;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogChooseImage;
+import com.vondear.rxtools.view.dialog.RxDialogSure;
 import com.vondear.rxtools.view.dialog.RxDialogSureCancel;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.C;
@@ -155,25 +157,36 @@ public class MainActivity extends BaseActivity {
                 case R.id.quit:
                     final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(mContext);//提示弹窗
                     //rxDialogSureCancel.getTitleView().setBackgroundResource(R.drawable.logo);
-                    rxDialogSureCancel.getSureView().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            RxSPTool.putBoolean(MyApp.newInstance(),
-                                    C.Splash.IS_LOGIN,false);
-                            RxActivityTool.skipActivity(
-                                    MainActivity.this,
-                                    LoginActivity.class
-                            );
-                            RxActivityTool.finishActivity(mContext);
-                        }
+                    rxDialogSureCancel.getSureView().setOnClickListener(v -> {
+                        RxSPTool.putBoolean(MyApp.newInstance(),
+                                C.Splash.IS_LOGIN,false);
+                        RxActivityTool.skipActivity(
+                                MainActivity.this,
+                                LoginActivity.class
+                        );
+                        RxActivityTool.finishActivity(mContext);
                     });
-                    rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            rxDialogSureCancel.cancel();
-                        }
-                    });
+                    rxDialogSureCancel.getCancelView().setOnClickListener(v -> rxDialogSureCancel.cancel());
                     rxDialogSureCancel.show();
+                    break;
+                case  R.id.person_data:
+                    RxActivityTool.skipActivity(mContext,PersonDataActivity.class);
+                    break;
+                case R.id.software_info:
+                    final RxDialogSure rxDialogSure = new RxDialogSure(mContext);//提示弹窗
+                    rxDialogSure.setTitle("软件说明");
+                    rxDialogSure.setContent("据了解，校园内存在大量资源闲置与浪费的现象。" +
+                            "作为专注于大学生的团队，所有的产品与服务都围绕同学们的需求开展与调整" +
+                            "，学生通过注册该app后，可以将自己不需要的物品通过平台免费发布到网上，" +
+                            "也可以通过平台购买自己需要的物品，操作非常简单。");
+                    rxDialogSure.getSureView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            rxDialogSure.cancel();
+                        }
+                    });
+                    rxDialogSure.show();
+                    break;
             }
             drawerLayout.closeDrawers();
             return true;
