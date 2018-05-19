@@ -32,7 +32,6 @@ public abstract class GetGoodsItemFun {
       mFirstPagerGoods=new ArrayList<FirstPagerGoods>();
       AVQuery avQuery=new AVQuery("Products");
        avQuery.whereEqualTo("schoolAddress", mSchoolAddress);
-
        avQuery.whereNotEqualTo("userName",mUserName);
        avQuery.findInBackground(new FindCallback()
         {
