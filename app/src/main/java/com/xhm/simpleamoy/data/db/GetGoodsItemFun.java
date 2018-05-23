@@ -33,6 +33,7 @@ public abstract class GetGoodsItemFun {
       AVQuery avQuery=new AVQuery("Products");
        avQuery.whereEqualTo("schoolAddress", mSchoolAddress);
        avQuery.whereNotEqualTo("userName",mUserName);
+       avQuery.whereEqualTo("isByBuy",false);
        avQuery.findInBackground(new FindCallback()
         {
             @Override
@@ -45,7 +46,6 @@ public abstract class GetGoodsItemFun {
 
                         for (int i = 0; i < list.size(); i++) {
                             AVObject avObject = (AVObject) list.get(i);
-
                             avObject.getAVFile("mainGoodsPic").getDataInBackground(new GetDataCallback() {
                                 @Override
                                 public void done(byte[] bytes, AVException e) {
