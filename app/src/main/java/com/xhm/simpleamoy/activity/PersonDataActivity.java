@@ -128,7 +128,7 @@ public void eventDeal(Event<Object> event){
                     Button btSumbit=(Button)view.findViewById(R.id.bt_csc_sumbit);
                     nsPro.attachDataSource(mProList);
                     rxDialog.setContentView(view);
-                    rxDialog.setCancelable(false);
+                    //rxDialog.setCancelable(false);
                     rxDialog.setFullScreen();
                     rxDialog.show();
                     nsPro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

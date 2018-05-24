@@ -56,6 +56,8 @@ import com.yalantis.ucrop.UCropActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.xutils.common.Callback;
+import org.xutils.common.task.PriorityExecutor;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -89,6 +91,7 @@ public class MainActivity extends BaseActivity {
     private CircleImageView mHeadImageView;
     private Uri resultUri;
     private byte[] mHeadImage;
+    private Callback.Cancelable cancelable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -299,7 +302,8 @@ public void updateSoftware(Event<AppInfo> event){
             params.setSaveFilePath(Environment.getExternalStorageDirectory() + "/myapp/");
             //自动为文件命名
             params.setAutoRename(true);
-            x.http().post(params, new org.xutils.common.Callback.ProgressCallback<File>() {
+            params.setExecutor(new PriorityExecutor(3,true));
+            cancelable=x.http().get(params, new org.xutils.common.Callback.ProgressCallback<File>() {
                 @Override
                 public void onSuccess(File result) {
                     //apk下载完成后，调用系统的安装方法
