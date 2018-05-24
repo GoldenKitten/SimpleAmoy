@@ -27,7 +27,7 @@ public abstract class GetPersonDataFun {
             @Override
             public void done(List list, AVException e) {
                 if (e==null) {
-                    if (list.isEmpty()) {
+                    if (!list.isEmpty()) {
                         User user = new User();
                         AVObject avObject = (AVObject) list.get(0);
                         user.setSchool(avObject.getString("schoolAddress"));
