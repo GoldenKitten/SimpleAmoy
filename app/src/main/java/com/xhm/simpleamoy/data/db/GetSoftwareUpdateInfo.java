@@ -18,7 +18,7 @@ public abstract class GetSoftwareUpdateInfo {
             public void done(List list, AVException e) {
        if (e==null)
        {
-           if (list.isEmpty())
+           if (!list.isEmpty())
            {
                AVObject avObject= (AVObject) list.get(0);
                String versionName= avObject.getString("versionName");
