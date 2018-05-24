@@ -5,7 +5,11 @@ import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
 import com.avos.avoscloud.AVOSCloud;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.vondear.rxtools.RxTool;
+
+import org.xutils.x;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,6 +29,8 @@ public class MyApp extends MultiDexApplication {
         AVOSCloud.initialize(this,"bdnkozGobOrByDkXdNgl4pvt-gzGzoHsz","mOWwqliHX6qTiRLEdNHYFlu6");
         AVOSCloud.setDebugLogEnabled(true);
         mContext=this;
+        x.Ext.init(this);
+        x.Ext.setDebug(false);
         //初始化工具类
         RxTool.init(this);
         //捕获全局异常
@@ -44,4 +50,5 @@ public class MyApp extends MultiDexApplication {
         }
     }
     public static MyApp newInstance(){return mContext;}
+
 }

@@ -1,11 +1,13 @@
 package com.xhm.simpleamoy.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -23,11 +25,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.vondear.rxtools.RxActivityTool;
+import com.vondear.rxtools.RxAppTool;
 import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxPhotoTool;
 import com.vondear.rxtools.RxSPTool;
+import com.vondear.rxtools.view.RxProgressBar;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogChooseImage;
+import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.vondear.rxtools.view.dialog.RxDialogSure;
 import com.vondear.rxtools.view.dialog.RxDialogSureCancel;
 import com.xhm.simpleamoy.Base.BaseActivity;
@@ -35,7 +40,9 @@ import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
 import com.xhm.simpleamoy.data.db.DataManager;
+import com.xhm.simpleamoy.data.db.GetSoftwareUpdateInfo;
 import com.xhm.simpleamoy.data.db.ModifyHeadImage;
+import com.xhm.simpleamoy.data.entity.AppInfo;
 import com.xhm.simpleamoy.data.entity.Event;
 import com.xhm.simpleamoy.fragment.FirstPagerFragment;
 import com.xhm.simpleamoy.fragment.IssueFragment;
@@ -49,6 +56,8 @@ import com.yalantis.ucrop.UCropActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -187,6 +196,26 @@ public class MainActivity extends BaseActivity {
                     });
                     rxDialogSure.show();
                     break;
+                case  R.id.update_software:
+                    RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
+                    rxDialogLoading.setLoadingText("检查更新中...");
+                    rxDialogLoading.setCancelable(false);
+                    rxDialogLoading.show();
+                    new Thread(() -> new GetSoftwareUpdateInfo(){
+                        @Override
+                        public void getSoftwareUpdateSucess(AppInfo appInfo) {
+                            rxDialogLoading.cancel();
+                            Event<AppInfo> event=new Event<AppInfo>("getAppInfoSucess",appInfo);
+                            EventBus.getDefault().post(event);
+                        }
+
+                        @Override
+                        public void getSoftwareUpdateFailed(String msg) {
+                         rxDialogLoading.cancel();
+                         RxToast.error(msg);
+                        }
+                    }).start();
+
             }
             drawerLayout.closeDrawers();
             return true;
@@ -227,7 +256,91 @@ public class MainActivity extends BaseActivity {
             return true;
         });
     }
+@Subscribe(threadMode = ThreadMode.MAIN)
+public void updateSoftware(Event<AppInfo> event){
+        if(event.getMsg().equals("getAppInfoSucess")){
+            AppInfo appInfo=event.getData();
+            int LocalVersionCode= RxAppTool.getAppVersionCode(mContext);
+            final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(mContext);//提示弹窗
+            if(LocalVersionCode<appInfo.getVersionCode()){
+                rxDialogSureCancel.getContentView().setText("发现最新版本"+appInfo.getVersionName()+",是否下载更新");
+            }
+            else {
+                rxDialogSureCancel.getContentView().setText("当前为最新版本，无需更新");
+            }
+            rxDialogSureCancel.getSureView().setOnClickListener(v -> {
+                if(LocalVersionCode<appInfo.getVersionCode()){
+                    downloadApk(appInfo.getUrl());
+                }
 
+                rxDialogSureCancel.cancel();
+            });
+            rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(LocalVersionCode<appInfo.getVersionCode()) {
+                        RxToast.showToast(mContext, "已取消最新版本的下载", 500);
+                    }
+                    rxDialogSureCancel.cancel();
+                }
+            });
+            rxDialogSureCancel.show();
+        }
+}private  void downloadApk(String url) {
+        //判断sd卡是否可用
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            ProgressDialog progressDialog=new ProgressDialog(mContext);
+            progressDialog.show();
+            RequestParams params = new RequestParams(url);
+            //自定义保存路径，Environment.getExternalStorageDirectory()：SD卡的根目录
+            params.setSaveFilePath(Environment.getExternalStorageDirectory() + "/myapp/");
+            //自动为文件命名
+            params.setAutoRename(true);
+            x.http().post(params, new org.xutils.common.Callback.ProgressCallback<File>() {
+                @Override
+                public void onSuccess(File result) {
+                    //apk下载完成后，调用系统的安装方法
+                    progressDialog.dismiss();
+                    RxAppTool.installApp(mContext,result.getAbsolutePath());
+                    RxActivityTool.AppExit(mContext);
+                }
+
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    progressDialog.dismiss();
+                    RxToast.error("下载失败");
+                }
+
+                @Override
+                public void onCancelled(org.xutils.common.Callback.CancelledException cex) {
+                    progressDialog.dismiss();
+                    RxToast.info("取消下载");
+                }
+
+                @Override
+                public void onFinished() {
+                }
+
+                //网络请求之前回调
+                @Override
+                public void onWaiting() {
+                }
+
+                //网络请求开始的时候回调
+                @Override
+                public void onStarted() {
+                }
+
+                //下载的时候不断回调的方法
+                @Override
+                public void onLoading(long total, long current, boolean isDownloading) {
+                    //当前进度和文件总大小
+                    progressDialog.setMax((int) total);
+                    progressDialog.setProgress((int)current);
+                }
+            });
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
