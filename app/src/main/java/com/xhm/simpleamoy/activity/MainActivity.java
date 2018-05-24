@@ -290,6 +290,9 @@ public void updateSoftware(Event<AppInfo> event){
         //判断sd卡是否可用
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             ProgressDialog progressDialog=new ProgressDialog(mContext);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);// 设置水平进度条
+            progressDialog.setCancelable(true);// 设置是否可以通过点击Back键取消
+            progressDialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
             progressDialog.show();
             RequestParams params = new RequestParams(url);
             //自定义保存路径，Environment.getExternalStorageDirectory()：SD卡的根目录

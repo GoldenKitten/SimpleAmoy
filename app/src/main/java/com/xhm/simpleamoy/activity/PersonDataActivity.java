@@ -67,6 +67,7 @@ public class PersonDataActivity extends BaseActivity {
         initToolbar("我的购买", R.drawable.ic_back);
         getCustomToolbar().setNavigationOnClickListener(v ->
                 RxActivityTool.finishActivity(this));
+        mSchoolAddress=RxSPTool.getString(MyApp.newInstance(),C.Splash.SCHOOLADDRESS);
         initData();
     }
 
