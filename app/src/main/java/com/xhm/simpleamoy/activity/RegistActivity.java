@@ -73,6 +73,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.vondear.rxtools.view.RxCaptcha.TYPE.CHARS;
 import static com.vondear.rxtools.view.dialog.RxDialogChooseImage.LayoutType.TITLE;
 
+/**
+ * 注册界面
+ */
 public class RegistActivity extends BaseActivity {
 
     @BindView(R.id.et_ar_username)

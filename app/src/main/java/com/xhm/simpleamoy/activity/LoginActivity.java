@@ -36,6 +36,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 登录界面
+ */
 public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.et_mobile)

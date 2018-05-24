@@ -41,6 +41,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 个人资料修改界面
+ */
 public class PersonDataActivity extends BaseActivity {
     @BindView(R.id.et_apd_username)
     EditText etApdUsername;

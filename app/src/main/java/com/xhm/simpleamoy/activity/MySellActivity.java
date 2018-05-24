@@ -35,6 +35,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 我的卖出界面
+ */
 public class MySellActivity extends BaseActivity {
 
     @BindView(R.id.rv_ams)

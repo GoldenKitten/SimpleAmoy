@@ -36,6 +36,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 我的购买界面
+ */
 public class MyBuyActivity extends BaseActivity {
     @BindView(R.id.rv_amb)
     RecyclerView rvAmb;

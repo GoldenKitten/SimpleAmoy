@@ -75,7 +75,9 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 import static com.vondear.rxtools.view.dialog.RxDialogChooseImage.LayoutType.TITLE;
 
-
+/**
+ * 主界面
+ */
 public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view)
     NavigationView navView;

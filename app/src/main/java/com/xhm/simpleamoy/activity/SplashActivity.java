@@ -9,10 +9,12 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxBarTool;
 import com.vondear.rxtools.RxPermissionsTool;
 import com.vondear.rxtools.RxSPTool;
+import com.vondear.rxtools.view.RxToast;
 import com.xhm.simpleamoy.Base.BaseActivity;
 import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
@@ -22,6 +24,9 @@ import com.xhm.simpleamoy.utils.LoadAssets;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * 启动界面
+ */
 public class  SplashActivity extends BaseActivity {
 
     @BindView(R.id.rl_as_root)
@@ -33,24 +38,30 @@ public class  SplashActivity extends BaseActivity {
         RxBarTool.FLAG_FULLSCREEN(this);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        RxPermissionsTool.with(this)
-                .addPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .addPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                .addPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .addPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .addPermission(Manifest.permission.CAMERA)
-                .addPermission(Manifest.permission.CALL_PHONE)
-                .addPermission(Manifest.permission.READ_PHONE_STATE)
-                .initPermission();
-        initData();
-        initAnimation();
+        //获取权限
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions
+                .request(Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        initAnimation();
+                    } else {
+                        // At least one permission is denied
+                        RxToast.error("该应用没有相应的权限");
+                        finish();
+                    }
+                });
     }
 
     private void initData() {
+        //加载学校地址数据
         LoadAssets.initData(this,"school.json");
     }
 
     private void initAnimation() {
+        //加载动画
         //旋转
         RotateAnimation rotateAnimation=new RotateAnimation(
                 0,360,

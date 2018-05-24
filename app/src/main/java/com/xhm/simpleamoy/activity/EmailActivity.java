@@ -33,6 +33,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 忘记密码界面
+ */
 public class EmailActivity extends BaseActivity {
 
     @BindView(R.id.tiet_username)

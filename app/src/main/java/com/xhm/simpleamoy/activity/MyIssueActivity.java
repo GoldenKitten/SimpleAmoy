@@ -37,6 +37,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 我的发布界面
+ */
 public class MyIssueActivity extends BaseActivity {
     @BindView(R.id.rv_ami)
     RecyclerView rvAmi;
