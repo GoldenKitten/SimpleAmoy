@@ -46,6 +46,7 @@ public class  SplashActivity extends BaseActivity {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
+                        initData();
                         initAnimation();
                     } else {
                         // At least one permission is denied
@@ -82,11 +83,6 @@ public class  SplashActivity extends BaseActivity {
         AlphaAnimation alphaAnimation=new AlphaAnimation(0,1);
         alphaAnimation.setDuration(2000);
         alphaAnimation.setFillAfter(true);
-        /*ObjectAnimator alpha = ObjectAnimator.ofFloat(rlSplRoot, "alpha", 0, 1)
-                .setDuration(2000);
-        alpha.start();*/
-
-
 
         //集合
         AnimationSet animationSet=new AnimationSet(false);
