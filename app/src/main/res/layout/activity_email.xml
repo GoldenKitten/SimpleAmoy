@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.xhm.simpleamoy.activity.EmailActivity">
+    tools:context="com.xhm.simpleamoy.activity.EmailActivity"
+    android:background="@drawable/simpleamoy_bg">
     <include layout="@layout/custom_toolbar"/>
 
         <RelativeLayout
@@ -44,6 +45,7 @@
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
             <Button
+                android:background="@drawable/shape_corner"
                 android:id="@+id/bt_ok"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"

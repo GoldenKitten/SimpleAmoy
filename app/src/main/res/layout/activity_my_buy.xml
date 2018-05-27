@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.xhm.simpleamoy.activity.MyIssueActivity"
-    android:background="@drawable/my_buy_bg"
+    android:background="@drawable/simpleamoy_bg"
     android:orientation="vertical">
     <include layout="@layout/custom_toolbar"/>
 

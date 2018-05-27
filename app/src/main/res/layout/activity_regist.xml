@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/regist_bg"
+    android:background="@drawable/simpleamoy_bg"
     tools:context="com.xhm.simpleamoy.activity.RegistActivity"
     android:fitsSystemWindows="true">
     <LinearLayout
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="上传头像"
-                android:background="@drawable/bg_btn_regist_selected"
+                android:background="@drawable/shape_corner"
                 android:layout_marginLeft="30dp"
                 android:layout_centerVertical="true"/>
             <LinearLayout
@@ -118,7 +118,7 @@
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_btn_regist_selected"
+            android:background="@drawable/shape_corner"
             android:text="注册"/>
 
     </LinearLayout>

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="我的发布"
         android:textColor="#000"
-        android:background="#ccc"
+        android:background="@drawable/shape_corner"
         android:drawableRight="@drawable/icon_right"
         android:padding="10dp"
         android:layout_margin="10dp"/>
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="我的购买"
         android:textColor="#000"
-        android:background="#ccc"
+        android:background="@drawable/shape_corner"
         android:drawableRight="@drawable/icon_right"
         android:padding="10dp"
         android:layout_margin="10dp"/>
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="我的卖出"
         android:textColor="#000"
-        android:background="#ccc"
+        android:background="@drawable/shape_corner"
         android:drawableRight="@drawable/icon_right"
         android:padding="10dp"
         android:layout_margin="10dp"/>

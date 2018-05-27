@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.xhm.simpleamoy.activity.MyIssueActivity"
-    android:background="@drawable/my_issue_bg"
+    android:background="@drawable/simpleamoy_bg"
     android:orientation="vertical">
     <include layout="@layout/custom_toolbar"/>
     <android.support.v7.widget.RecyclerView
@@ -15,6 +15,7 @@
         android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
     <Button
+        android:background="@drawable/shape_corner"
         android:id="@+id/bt_ami_delete"
         android:layout_margin="10dp"
         android:layout_width="match_parent"

@@ -17,8 +17,9 @@
         <ImageView
             android:id="@+id/iv_fbg_main_goods_pic"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/circle_elves_ball"/>
+            android:layout_height="200dp"
+            android:src="@drawable/circle_elves_ball"
+            android:scaleType="fitXY"/>
         <TextView
             android:id="@+id/tv_fbg_goods_name"
             android:layout_gravity="center"
@@ -145,6 +146,7 @@
 
 </ScrollView>
     <Button
+        android:background="@drawable/shape_corner"
         android:id="@+id/bt_fbg_cancel_schedule"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
@@ -153,6 +155,7 @@
         android:visibility="gone"
         android:text="取消预定"/>
     <Button
+        android:background="@drawable/shape_corner"
         android:id="@+id/bt_fbg_schedule_center"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

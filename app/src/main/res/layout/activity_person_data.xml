@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/person_data_bg">
+    android:background="@drawable/simpleamoy_bg">
     <include layout="@layout/custom_toolbar"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
