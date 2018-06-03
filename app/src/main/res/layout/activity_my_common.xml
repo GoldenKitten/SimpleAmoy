@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_margin="15dp">
+    android:layout_margin="15dp"
+    android:background="@drawable/shape_blue_corner">
     <ImageView
         android:id="@+id/iv_amc"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/circle_elves_ball"
+        android:scaleType="fitXY"
         android:layout_alignParentLeft="true"/>
     <TextView
         android:layout_margin="5dp"

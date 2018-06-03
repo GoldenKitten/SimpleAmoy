@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxFragmentTool;
 import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxSPTool;
@@ -27,8 +30,10 @@ import com.vondear.rxtools.view.dialog.RxDialogLoading;
 import com.xhm.simpleamoy.C;
 import com.xhm.simpleamoy.MyApp;
 import com.xhm.simpleamoy.R;
+import com.xhm.simpleamoy.activity.MainActivity;
 import com.xhm.simpleamoy.data.db.GetGoodsItemFun;
 import com.xhm.simpleamoy.data.entity.FirstPagerGoods;
+import com.xhm.simpleamoy.utils.BottomNavigationViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +77,19 @@ public class FirstPagerFragment extends Fragment {
     @Override
    public void onStart() {
         super.onStart();
+        MainActivity mainActivity=(MainActivity)mActivity;
+        mainActivity.initToolbar("首页", R.drawable.ic_menu);
+        BottomNavigationViewUtil.disableShiftMode(mainActivity.bottomNavigationView);
+        mainActivity.bottomNavigationView.setItemIconTintList(null);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                mainActivity, mainActivity.drawerLayout, mainActivity.getCustomToolbar(),
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_menu);
+        toggle.setToolbarNavigationClickListener(v -> mainActivity.drawerLayout.openDrawer(GravityCompat.START));
+        mainActivity.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         RxDialogLoading rxDialogLoading = new RxDialogLoading(mActivity);
         rxDialogLoading.setLoadingText("加载中 ...");
@@ -99,6 +117,18 @@ public class FirstPagerFragment extends Fragment {
                     transaction.replace(R.id.fl_content,buyGoodsFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
+                    MainActivity mainActivity=(MainActivity)mActivity;
+                    mainActivity.initToolbar("商品", R.drawable.ic_back);
+                    mainActivity.getCustomToolbar()
+                            .setNavigationOnClickListener(v ->
+                            {
+                                mFManager.popBackStack();
+                                mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                                mainActivity.tvAmBn.setVisibility(View.VISIBLE);
+                            });
+                    mainActivity.initToolbar("首页");
+                    mainActivity.bottomNavigationView.setVisibility(View.GONE);
+                    mainActivity.tvAmBn.setVisibility(View.GONE);
                     //initToolbar("首页");
 
 

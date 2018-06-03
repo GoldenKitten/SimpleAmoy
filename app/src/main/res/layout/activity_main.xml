@@ -24,6 +24,11 @@
             android:layout_height="0dp"
             android:layout_weight="1">
         </FrameLayout>
+            <TextView
+                android:id="@+id/tv_am_bn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_line"/>
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
@@ -41,7 +46,6 @@
         android:layout_gravity="start"
         app:menu="@menu/nav_menu"
         app:headerLayout="@layout/nav_header"
-        android:fitsSystemWindows="true"
         android:background="@drawable/simpleamoy_bg">
 
     </android.support.design.widget.NavigationView>

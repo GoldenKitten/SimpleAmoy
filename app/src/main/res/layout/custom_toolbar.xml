@@ -17,7 +17,7 @@
                 android:layout_gravity="center"
                 android:text="智慧北京"
                 android:singleLine="true"
-                android:textColor="#fff"
+                android:textColor="#ccc"
                 android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>
 

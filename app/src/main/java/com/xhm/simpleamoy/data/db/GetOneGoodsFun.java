@@ -48,8 +48,8 @@ public abstract class GetOneGoodsFun {
                         mIssueGoods.setWeixing(avObject.getString("weixing"));
                         mIssueGoods.setMobile(avObject.getString("mobile"));
                         mIssueGoods.setQq(avObject.getString("qq"));
-                        mIssueGoods.setUserName(avObject.getString(mUserName));
-                        mIssueGoods.setGoodsUUID(avObject.getString(mGoodsUUID));
+                        mIssueGoods.setUserName(avObject.getString("userName"));
+                        mIssueGoods.setGoodsUUID(avObject.getString("goodsUUID"));
                         mIssueGoods.setGoodsName(avObject.getString("goodsName"));
                         mIssueGoods.setGoodsPrice(avObject.getString("goodsPrice"));
                         mIssueGoods.setGoodsDes(avObject.getString("goodsDes"));

@@ -177,19 +177,19 @@ public class BuyGoodsFragment extends Fragment {
                 mViewHolder.tvFbgQq.setVisibility(View.GONE);
             }
             else {
-                mViewHolder.tvFbgQq.setText(issueGoods.getQq());
+                mViewHolder.tvFbgQq.setText("QQ号："+issueGoods.getQq());
             }
             if(TextUtils.isEmpty(issueGoods.getWeixing())){
                 mViewHolder.tvFbgWeixing.setVisibility(View.GONE);
             }
             else {
-                mViewHolder.tvFbgWeixing.setText(issueGoods.getWeixing());
+                mViewHolder.tvFbgWeixing.setText("微信号："+issueGoods.getWeixing());
             }
             if(TextUtils.isEmpty(issueGoods.getMobile())){
                 mViewHolder.tvFbgMobile.setVisibility(View.GONE);
             }
             else {
-                mViewHolder.tvFbgMobile.setText(issueGoods.getMobile());
+                mViewHolder.tvFbgMobile.setText("手机号："+issueGoods.getMobile());
             }
             if(issueGoods.isByBuy()&&
                     issueGoods.getBuyUserName()
@@ -203,6 +203,14 @@ public class BuyGoodsFragment extends Fragment {
             mViewHolder.tvFbgUsername.setText(issueGoods.getUserName());
             mViewHolder.rvFbgGoodsPic.setLayoutManager(
                     new LinearLayoutManager(mActivity));
+            if(issueGoods.getUserName().equals(RxSPTool.getString(MyApp.newInstance(),
+                    C.Splash.USERNAME))){
+                mViewHolder.btFbgScheduleCenter.setEnabled(false);
+                RxLogTool.i("进入了");
+            }
+            if(issueGoods.getGoodsPic()==null||issueGoods.getGoodsPic().isEmpty()){
+                mViewHolder.tvFbgGoodsTv.setVisibility(View.GONE);
+            }
             BuyGoodsAdapter buyGoodsAdapter=new BuyGoodsAdapter(
                     R.layout.fragment_buy_goods_item,
                     issueGoods.getGoodsPic()
@@ -265,6 +273,8 @@ public class BuyGoodsFragment extends Fragment {
         Button btFbgCancelSchedule;
         @BindView(R.id.bt_fbg_schedule_center)
         Button btFbgScheduleCenter;
+        @BindView(R.id.tv_fbg_goods_tv)
+        TextView tvFbgGoodsTv;
 
 
         ViewHolder(View view) {

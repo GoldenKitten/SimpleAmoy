@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/shape_corner">
+            android:background="@drawable/shape_blue_corner">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

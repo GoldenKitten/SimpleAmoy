@@ -1,6 +1,5 @@
 package com.xhm.simpleamoy.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -16,9 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,10 +22,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.vondear.rxtools.RxActivityTool;
 import com.vondear.rxtools.RxAppTool;
-import com.vondear.rxtools.RxImageTool;
 import com.vondear.rxtools.RxPhotoTool;
 import com.vondear.rxtools.RxSPTool;
-import com.vondear.rxtools.view.RxProgressBar;
 import com.vondear.rxtools.view.RxToast;
 import com.vondear.rxtools.view.dialog.RxDialogChooseImage;
 import com.vondear.rxtools.view.dialog.RxDialogLoading;
@@ -49,7 +43,6 @@ import com.xhm.simpleamoy.fragment.IssueFragment;
 import com.xhm.simpleamoy.fragment.PersonFragment;
 import com.xhm.simpleamoy.utils.BottomNavigationViewUtil;
 import com.xhm.simpleamoy.utils.FileUtil;
-import com.xhm.simpleamoy.utils.LogUtil;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
@@ -82,13 +75,15 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     @BindView(R.id.bottom_navigation_view)
-    BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
     @BindView(R.id.fl_content)
     FrameLayout flContent;
     private static final int REQUEST_MAIN_IMAGE = 1;
     private static final int REQUEST_IMAGE = 2;
+    @BindView(R.id.tv_am_bn)
+    public TextView tvAmBn;
     private List<byte[]> mImage;
     private CircleImageView mHeadImageView;
     private Uri resultUri;
@@ -113,25 +108,26 @@ public class MainActivity extends BaseActivity {
         new Thread(() -> {
             new DataManager(RxSPTool.getString(
                     MyApp.newInstance(),
-                    C.Splash.USERNAME),0){
+                    C.Splash.USERNAME), 0) {
                 @Override
                 public void getDataSucess(List list) {
                     RxSPTool.putString(MyApp.newInstance(),
-                            C.Splash.SCHOOLADDRESS,(String) list.get(1));
-                    Event event=new Event("HeadImageAndUserName",list);
+                            C.Splash.SCHOOLADDRESS, (String) list.get(1));
+                    Event event = new Event("HeadImageAndUserName", list);
                     EventBus.getDefault().post(event);
                 }
 
                 @Override
                 public void getDataFaild(String msg) {
-                        RxToast.error(msg);
+                    RxToast.error(msg);
                 }
             };
         }).start();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void setImageAndUserName(Event<List> event){
-        if(event.getMsg().equals("HeadImageAndUserName")) {
+    public void setImageAndUserName(Event<List> event) {
+        if (event.getMsg().equals("HeadImageAndUserName")) {
             View headView = navView.getHeaderView(0);
             ImageView imageView = (ImageView) headView.findViewById(R.id.civ_head_image);
             TextView textView = (TextView) headView.findViewById(R.id.tv_username);
@@ -143,23 +139,32 @@ public class MainActivity extends BaseActivity {
             initView();
         }
     }
+
     private void initView() {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        FirstPagerFragment fPagerFragment =FirstPagerFragment.newInstance
+        FirstPagerFragment fPagerFragment = FirstPagerFragment.newInstance
                 (mFragmentManager);
-        transaction.replace(R.id.fl_content,fPagerFragment);
+        transaction.replace(R.id.fl_content, fPagerFragment);
         //transaction.addToBackStack(null);
         transaction.commit();
-        initToolbar("首页", R.drawable.icon_menu);
+        initToolbar("首页", R.drawable.ic_menu);
         BottomNavigationViewUtil.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setItemIconTintList(null);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, getCustomToolbar(),
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.ic_menu);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        View view=navView.getHeaderView(0);
+        View view = navView.getHeaderView(0);
         mHeadImageView = (CircleImageView)
                 view.findViewById(R.id.civ_head_image);
         mHeadImageView.setOnClickListener(v -> {
@@ -167,13 +172,13 @@ public class MainActivity extends BaseActivity {
             dialogChooseImage.show();
         });
         navView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.quit:
                     final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(mContext);//提示弹窗
                     //rxDialogSureCancel.getTitleView().setBackgroundResource(R.drawable.logo);
                     rxDialogSureCancel.getSureView().setOnClickListener(v -> {
                         RxSPTool.putBoolean(MyApp.newInstance(),
-                                C.Splash.IS_LOGIN,false);
+                                C.Splash.IS_LOGIN, false);
                         RxActivityTool.skipActivity(
                                 MainActivity.this,
                                 LoginActivity.class
@@ -183,8 +188,8 @@ public class MainActivity extends BaseActivity {
                     rxDialogSureCancel.getCancelView().setOnClickListener(v -> rxDialogSureCancel.cancel());
                     rxDialogSureCancel.show();
                     break;
-                case  R.id.person_data:
-                    RxActivityTool.skipActivity(mContext,PersonDataActivity.class);
+                case R.id.person_data:
+                    RxActivityTool.skipActivity(mContext, PersonDataActivity.class);
                     break;
                 case R.id.software_info:
                     final RxDialogSure rxDialogSure = new RxDialogSure(mContext);//提示弹窗
@@ -192,7 +197,7 @@ public class MainActivity extends BaseActivity {
                     rxDialogSure.setContent("据了解，校园内存在大量资源闲置与浪费的现象。" +
                             "作为专注于大学生的团队，所有的产品与服务都围绕同学们的需求开展与调整" +
                             "，学生通过注册该app后，可以将自己不需要的物品通过平台免费发布到网上，" +
-                            "也可以通过平台购买自己需要的物品，操作非常简单。");
+                            "也可以通过该平台购买自己需要的物品，操作非常简单，注意：本产品并不涉及交易，请卖家与买家自行联系。");
                     rxDialogSure.getSureView().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -201,23 +206,23 @@ public class MainActivity extends BaseActivity {
                     });
                     rxDialogSure.show();
                     break;
-                case  R.id.update_software:
+                case R.id.update_software:
                     RxDialogLoading rxDialogLoading = new RxDialogLoading(mContext);
                     rxDialogLoading.setLoadingText("检查更新中...");
                     rxDialogLoading.setCancelable(false);
                     rxDialogLoading.show();
-                    new Thread(() -> new GetSoftwareUpdateInfo(){
+                    new Thread(() -> new GetSoftwareUpdateInfo() {
                         @Override
                         public void getSoftwareUpdateSucess(AppInfo appInfo) {
                             rxDialogLoading.cancel();
-                            Event<AppInfo> event=new Event<AppInfo>("getAppInfoSucess",appInfo);
+                            Event<AppInfo> event = new Event<AppInfo>("getAppInfoSucess", appInfo);
                             EventBus.getDefault().post(event);
                         }
 
                         @Override
                         public void getSoftwareUpdateFailed(String msg) {
-                         rxDialogLoading.cancel();
-                         RxToast.error(msg);
+                            rxDialogLoading.cancel();
+                            RxToast.error(msg);
                         }
                     }).start();
 
@@ -226,33 +231,33 @@ public class MainActivity extends BaseActivity {
             return true;
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()){
-                case  R.id.bottom_first_pager:
+            switch (item.getItemId()) {
+                case R.id.bottom_first_pager:
                     FragmentTransaction fPtransaction = mFragmentManager.beginTransaction();
-                    FirstPagerFragment firstPagerFragment =FirstPagerFragment.newInstance
+                    FirstPagerFragment firstPagerFragment = FirstPagerFragment.newInstance
                             (mFragmentManager);
-                    fPtransaction.replace(R.id.fl_content,firstPagerFragment);
+                    fPtransaction.replace(R.id.fl_content, firstPagerFragment);
                     //transaction.addToBackStack(null);
                     fPtransaction.commit();
                     initToolbar("首页");
                     break;
-                case  R.id.bottom_issue:
+                case R.id.bottom_issue:
                     //drawerLayout.setBackgroundResource(R.drawable.issue_bg);
                     FragmentTransaction iTransaction = mFragmentManager.beginTransaction();
                     IssueFragment issueFragment = IssueFragment.newInstance
                             (mFragmentManager);
                     //EventBus.getDefault().register(issueFragment);
-                    iTransaction.replace(R.id.fl_content,issueFragment);
+                    iTransaction.replace(R.id.fl_content, issueFragment);
                     //transaction.addToBackStack(null);
                     iTransaction.commit();
                     initToolbar("发布");
                     break;
-                case  R.id.bottom_person:
+                case R.id.bottom_person:
                     //drawerLayout.setBackgroundResource(R.drawable.person_bg);
                     FragmentTransaction pTransaction = mFragmentManager.beginTransaction();
                     PersonFragment personFragment = PersonFragment.newInstance
                             (mFragmentManager);
-                    pTransaction.replace(R.id.fl_content,personFragment);
+                    pTransaction.replace(R.id.fl_content, personFragment);
                     //transaction.addToBackStack(null);
                     pTransaction.commit();
                     initToolbar("个人");
@@ -261,20 +266,20 @@ public class MainActivity extends BaseActivity {
             return true;
         });
     }
-@Subscribe(threadMode = ThreadMode.MAIN)
-public void updateSoftware(Event<AppInfo> event){
-        if(event.getMsg().equals("getAppInfoSucess")){
-            AppInfo appInfo=event.getData();
-            int LocalVersionCode= RxAppTool.getAppVersionCode(mContext);
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateSoftware(Event<AppInfo> event) {
+        if (event.getMsg().equals("getAppInfoSucess")) {
+            AppInfo appInfo = event.getData();
+            int LocalVersionCode = RxAppTool.getAppVersionCode(mContext);
             final RxDialogSureCancel rxDialogSureCancel = new RxDialogSureCancel(mContext);//提示弹窗
-            if(LocalVersionCode<appInfo.getVersionCode()){
-                rxDialogSureCancel.getContentView().setText("发现最新版本"+appInfo.getVersionName()+",是否下载更新");
-            }
-            else {
+            if (LocalVersionCode < appInfo.getVersionCode()) {
+                rxDialogSureCancel.getContentView().setText("发现最新版本" + appInfo.getVersionName() + ",是否下载更新");
+            } else {
                 rxDialogSureCancel.getContentView().setText("当前为最新版本，无需更新");
             }
             rxDialogSureCancel.getSureView().setOnClickListener(v -> {
-                if(LocalVersionCode<appInfo.getVersionCode()){
+                if (LocalVersionCode < appInfo.getVersionCode()) {
                     downloadApk(appInfo.getUrl());
                 }
 
@@ -283,7 +288,7 @@ public void updateSoftware(Event<AppInfo> event){
             rxDialogSureCancel.getCancelView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(LocalVersionCode<appInfo.getVersionCode()) {
+                    if (LocalVersionCode < appInfo.getVersionCode()) {
                         RxToast.showToast(mContext, "已取消最新版本的下载", 500);
                     }
                     rxDialogSureCancel.cancel();
@@ -291,10 +296,12 @@ public void updateSoftware(Event<AppInfo> event){
             });
             rxDialogSureCancel.show();
         }
-}private  void downloadApk(String url) {
+    }
+
+    private void downloadApk(String url) {
         //判断sd卡是否可用
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            ProgressDialog progressDialog=new ProgressDialog(mContext);
+            ProgressDialog progressDialog = new ProgressDialog(mContext);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);// 设置水平进度条
             progressDialog.setCancelable(true);// 设置是否可以通过点击Back键取消
             progressDialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
@@ -304,13 +311,13 @@ public void updateSoftware(Event<AppInfo> event){
             params.setSaveFilePath(Environment.getExternalStorageDirectory() + "/myapp/");
             //自动为文件命名
             params.setAutoRename(true);
-            params.setExecutor(new PriorityExecutor(3,true));
-            cancelable=x.http().get(params, new org.xutils.common.Callback.ProgressCallback<File>() {
+            params.setExecutor(new PriorityExecutor(3, true));
+            cancelable = x.http().get(params, new Callback.ProgressCallback<File>() {
                 @Override
                 public void onSuccess(File result) {
                     //apk下载完成后，调用系统的安装方法
                     progressDialog.dismiss();
-                    RxAppTool.installApp(mContext,result.getAbsolutePath());
+                    RxAppTool.installApp(mContext, result.getAbsolutePath());
                     RxActivityTool.AppExit(mContext);
                 }
 
@@ -321,7 +328,7 @@ public void updateSoftware(Event<AppInfo> event){
                 }
 
                 @Override
-                public void onCancelled(org.xutils.common.Callback.CancelledException cex) {
+                public void onCancelled(CancelledException cex) {
                     progressDialog.dismiss();
                     RxToast.info("取消下载");
                 }
@@ -345,16 +352,17 @@ public void updateSoftware(Event<AppInfo> event){
                 public void onLoading(long total, long current, boolean isDownloading) {
                     //当前进度和文件总大小
                     progressDialog.setMax((int) total);
-                    progressDialog.setProgress((int)current);
+                    progressDialog.setProgress((int) current);
                 }
             });
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case  REQUEST_IMAGE :
+            case REQUEST_IMAGE:
                 if (resultCode == RESULT_OK) {
                     // Get the result list of select image paths
                     List<String> path = data.getStringArrayListExtra(
@@ -369,7 +377,7 @@ public void updateSoftware(Event<AppInfo> event){
                 }
                 break;
 
-            case REQUEST_MAIN_IMAGE :
+            case REQUEST_MAIN_IMAGE:
                 if (resultCode == RESULT_OK) {
                     // Get the result list of select image paths
 
@@ -398,10 +406,10 @@ public void updateSoftware(Event<AppInfo> event){
                 if (resultCode == RESULT_OK) {
                     resultUri = UCrop.getOutput(data);
 
-                    mHeadImage= FileUtil.getBytesFromFile(roadImageView(resultUri, mHeadImageView));
+                    mHeadImage = FileUtil.getBytesFromFile(roadImageView(resultUri, mHeadImageView));
                     new Thread(() -> {
                         new ModifyHeadImage(RxSPTool.getString(MyApp.newInstance(),
-                                C.Splash.USERNAME),mHeadImage){
+                                C.Splash.USERNAME), mHeadImage) {
                             @Override
                             public void modifySucess() {
                                 RxToast.success("修改成功");
@@ -424,9 +432,10 @@ public void updateSoftware(Event<AppInfo> event){
                 break;
             default:
                 break;
-            }
+        }
 
     }
+
     //从Uri中加载图片 并将其转化成File文件返回
     private File roadImageView(Uri uri, CircleImageView imageView) {
         Glide.with(this).
@@ -480,12 +489,19 @@ public void updateSoftware(Event<AppInfo> event){
                 .withOptions(options)
                 .start(this);
     }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (mFragmentManager.getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+            } else {
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                tvAmBn.setVisibility(View.VISIBLE);
+                super.onBackPressed();
+            }
         }
     }
 
