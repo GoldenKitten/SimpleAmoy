@@ -20,6 +20,7 @@
         android:id="@+id/bt_ams_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="解除预定"/>
+        android:text="解除预定"
+        android:textColor="#ffffff"/>
 
 </LinearLayout>

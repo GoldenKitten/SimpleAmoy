@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="幽思寂动"
+        android:text="快乐风男"
         android:textColor="@color/theme_teal_dark"
         android:textSize="20sp"/>
 
