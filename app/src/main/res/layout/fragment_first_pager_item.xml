@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="这是一件新商品"
+
         android:textSize="25sp"
         android:textColor="#000"/>
     <TextView
