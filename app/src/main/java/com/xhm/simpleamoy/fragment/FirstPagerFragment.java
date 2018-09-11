@@ -126,7 +126,6 @@ public class FirstPagerFragment extends Fragment {
                                 mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
                                 mainActivity.tvAmBn.setVisibility(View.VISIBLE);
                             });
-                    mainActivity.initToolbar("首页");
                     mainActivity.bottomNavigationView.setVisibility(View.GONE);
                     mainActivity.tvAmBn.setVisibility(View.GONE);
                     //initToolbar("首页");
